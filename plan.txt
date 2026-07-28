@@ -14,6 +14,12 @@ Structs:
 
 Classes:
 
+Gamestate:
+-board
+-pacman
+-vector of unique_ptr to ghosts 
+//(since each ghost behave differently we need ptr so it perform thier virtual function)
+
 Board:
 -2d array of tiles
 
