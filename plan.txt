@@ -1,0 +1,52 @@
+
+Game loop:
+-draw board
+-get user input (returns direction)
+-move pacman based on input 
+-check tile for pellets (remove them, or if super pellet, change ghost state to scared for set turns)
+-move ghost based on AI
+-Check collision
+-Check game over
+-update 
+
+Structs:
+-Position (x,y)
+
+Classes:
+
+Board:
+-2d array of tiles
+
+Tile:
+-raw pointer to Entity that's on this tile (print it's symbol)
+-Position
+-Occupied bool state
+
+Entity -> inherit Pacman & Ghost & Pellet & wall
+-name
+-symbol
+-direction
+-move(direction) 
+-Position
+
+Pacman:
+-alive status
+-get move direction based on user input
+
+Ghost -> inherit Blinky, Pinky, Inky, Clyde
+-name
+-symbol
+-direction
+-Position targetTile
+-enum class GhostState (dead, alive, scared)
+-Ghost AI (depend on each derived class) determine which tile to go for
+-Move to the target tile (see which direction is closest to target tile)
+-If ghost hits wall / intersection, recalculate target tile, then pick direction again
+
+Pellet
+-consume bool state
+-enum class Type {normal, power}
+-consume()
+
+wall
+-Ghost & Pacman cannot go through here
