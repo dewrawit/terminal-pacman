@@ -1,19 +1,21 @@
 #pragma once
 
 #include <string>
+#include "Entity.h"
 
-class Pacman
+struct Position;
+
+class Pacman : public Entity
 {
     private:
-    std::string m_name { "Pac-man" };
-    char m_symbol { 'P' };
     bool m_alive { true };
 
     public:
-    Pacman() = default;
+    Pacman(const Position& pos) 
+        : Entity{"Pac-man",'P',pos}
+        , m_alive{ true } 
+    { }
 
-    const std::string& getName() const { return m_name; }
-    char getSymbol() const { return m_symbol; }
     bool isAlive() const { return m_alive; }
     bool isDead() const { return !m_alive; }
 };
