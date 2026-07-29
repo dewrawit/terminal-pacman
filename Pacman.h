@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <string_view>
 
 class Pacman
 {
@@ -11,6 +10,8 @@ class Pacman
     bool m_alive { true };
 
     public:
+    Pacman() = default;
+
     const std::string& getName() const { return m_name; }
     char getSymbol() const { return m_symbol; }
     bool isAlive() const { return m_alive; }
