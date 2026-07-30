@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Position.h"
+#include "AsciiData.h"
 
 class Tile
 {
@@ -19,4 +20,5 @@ class Tile
     Position getPosition() const { return m_position; }
     bool isOccupied() const { return m_symbol != ' '; }
     bool isEmpty() const { return m_symbol == ' '; }
+    bool isWall() const { return m_symbol == AsciiData::WallSymbol; }
 };

@@ -2,6 +2,6 @@
 
 struct Position
 {
-    int x{};
-    int y{};
+    std::size_t x{};
+    std::size_t y{};
 };
