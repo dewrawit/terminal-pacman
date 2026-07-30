@@ -46,19 +46,21 @@ class GameState
                         m_ghosts.push_back(std::make_unique<Clyde>(currentPosition));
                         break;
                     case AsciiData::NormalPelletSymbol:
-                        m_pellets.emplace_back(Pellet::Type::normal, currentPosition);
+                        m_pellets.emplace_back(currentPosition, Pellet::Type::normal);
                         break;
                     case AsciiData::SuperPelletSymbol:
-                        m_pellets.emplace_back(Pellet::Type::super, currentPosition);
+                        m_pellets.emplace_back(currentPosition, Pellet::Type::super);
                         break;
                     case AsciiData::WallSymbol:
                         break; //GameState do not need to store wall info (Tile can check wall)
                     case ' ':
                         break;
 
-                    default: assert(false && "Board map contains invalid symbol\n");
+                    default: assert(false && "Board map contains invalid symbol");
                 }
             }
         }
     }
+    const Board& getBoard() const { return m_board; }
+    Board& getBoard() { return m_board; }
 };

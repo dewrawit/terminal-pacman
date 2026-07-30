@@ -4,6 +4,7 @@
 #include "LevelInfo.h"
 #include "Tile.h"
 #include <array>
+#include <print>
 
 class Board
 {
@@ -19,18 +20,29 @@ class Board
     template <std::size_t Height>
     Board(const std::array<std::string_view,Height>& map)
     { 
-        for(auto row {0uz}; row < Height; ++row)
+        for(auto row {0uz}; row < getHeight(); ++row)
         {
-            for(auto col {0uz}; col < Length; ++col)
+            for(auto col {0uz}; col < getLength(); ++col)
             {
                 levelMap[row][col] = Tile{ map[row][col], Position{row,col} };
             }
         }
     }
-    int getLength() const { return LevelInfo::mapLength; }
-    int getHeight() const { return LevelInfo::mapHeight; }
+    std::size_t getLength() const { return LevelInfo::mapLength; }
+    std::size_t getHeight() const { return LevelInfo::mapHeight; }
     Tile getTileAtPosition(std::size_t row, std::size_t col) const
     {
         return levelMap[row][col];
+    }
+    void draw()
+    {
+       for(auto row {0uz}; row < LevelInfo::mapHeight; ++row)
+        {
+            for(auto col {0uz}; col < LevelInfo::mapLength; ++col)
+            {
+                std::print("{}",getTileAtPosition(row,col).getSymbol()); 
+            }
+            std::println();
+        } 
     }
 };

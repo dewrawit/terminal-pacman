@@ -15,7 +15,7 @@ class Pellet
 
     public:
     Pellet() = default;
-    Pellet(Type type = Type::normal, const Position& position)
+    Pellet(const Position& position, Type type = Type::normal)
         : m_type{ type }
         , m_symbol{ isNormalPellet() ? AsciiData::NormalPelletSymbol : AsciiData::SuperPelletSymbol}
         , m_position{ position }
