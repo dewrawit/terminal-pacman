@@ -5,6 +5,7 @@
 
 #include "Entity.h"
 #include "Position.h"
+#include "AsciiData.h"
 
 class Ghost : public Entity
 {
@@ -35,7 +36,7 @@ class Blinky : public Ghost
 {
     public:
     Blinky(const Position& pos) 
-        : Ghost{ "Blinky", 'B', pos }
+        : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos }
     { }
 };
 
@@ -43,7 +44,7 @@ class Pinky : public Ghost
 {
     public:
     Pinky(const Position& pos) 
-        : Ghost{ "Pinky", 'N', pos } //'P' collides with Pac-man
+        : Ghost{ "Pinky", AsciiData::PinkySymbol, pos } //'P' collides with Pac-man
     { }
 };
 
@@ -51,7 +52,7 @@ class Inky : public Ghost
 {
     public:
     Inky(const Position& pos) 
-        : Ghost{ "Inky", 'I', pos }
+        : Ghost{ "Inky", AsciiData::InkySymbol, pos }
     { }
 };
 
@@ -59,6 +60,6 @@ class Clyde : public Ghost
 {
     public:
     Clyde(const Position& pos) 
-        : Ghost{ "Clyde", 'C', pos }
+        : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos }
     { }
 };

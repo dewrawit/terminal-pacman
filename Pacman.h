@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Entity.h"
+#include "AsciiData.h"
 
 struct Position;
 
@@ -13,7 +14,7 @@ class Pacman : public Entity
     public:
     Pacman() = default;
     Pacman(const Position& pos) 
-        : Entity{"Pac-man",'P',pos}
+        : Entity{"Pac-man",AsciiData::PacmanSymbol,pos}
         , m_alive{ true } 
     { }
 
