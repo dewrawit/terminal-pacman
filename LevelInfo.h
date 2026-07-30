@@ -3,7 +3,7 @@
 #include <array>
 #include <string_view>
 
-namespace LevelMaps
+namespace LevelInfo
 {
     using namespace std::literals::string_view_literals;
 
@@ -16,7 +16,7 @@ namespace LevelMaps
     "#.####.##.########.##.####.#"sv,
     "#......##....##....##......#"sv,
     "######.##### ## #####.######"sv,
-    "     #.#      B      #.#     "sv,
+    "     #.#      B      #.#    "sv,
     "######.#  ###--###  #.######"sv,
     "      .   # I N C#   .      "sv,
     "######.#  ########  #.######"sv,
@@ -30,5 +30,7 @@ namespace LevelMaps
     "#.##########.##.##########.#"sv,
     "#..........................#"sv,
     "############################"sv,
-};
+    };
+    constexpr int mapLength = map[0].length();
+    constexpr int mapHeight = map.size();
 }
