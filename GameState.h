@@ -21,7 +21,7 @@ class GameState
     public:
     
     //Game state must read board data to create entites at correct position
-    GameState(const Board& board) 
+    GameState(const Board& board) : m_board{ board }
     {
         for(auto row {0uz}; row < board.getHeight(); ++row)
         {
@@ -53,6 +53,8 @@ class GameState
                         break;
                     case AsciiData::WallSymbol:
                         break; //GameState do not need to store wall info (Tile can check wall)
+                    case ' ':
+                        break;
 
                     default: assert(false && "Board map contains invalid symbol\n");
                 }

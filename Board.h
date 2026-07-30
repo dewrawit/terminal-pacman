@@ -15,8 +15,9 @@ class Board
 
     public:
     Board() = default;
-    template <std::size_t Length, std::size_t Height>
-    Board(const std::array<std::array<std::string_view,Length>,Height>& map)
+
+    template <std::size_t Height>
+    Board(const std::array<std::string_view,Height>& map)
     { 
         for(auto row {0uz}; row < Height; ++row)
         {
