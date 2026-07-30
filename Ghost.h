@@ -18,6 +18,7 @@ class Ghost : public Entity
 
     public:
     virtual ~Ghost() = default; //Plan to make gamestate store unique_ptr to Ghost
+    Ghost() = default;
     Ghost(SV name, char symbol, const Position& pos)
         : Entity{ name, symbol, pos }
         , m_state{ GhostState::stalemate }

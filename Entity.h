@@ -19,6 +19,7 @@ class Entity
 
     public:
     virtual ~Entity() = default;
+    Entity() = default;
     Entity(SV name, char symbol, const Position& pos)
         : m_name{ name }
         , m_symbol{ symbol }

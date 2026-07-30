@@ -11,6 +11,7 @@ class Pacman : public Entity
     bool m_alive { true };
 
     public:
+    Pacman() = default;
     Pacman(const Position& pos) 
         : Entity{"Pac-man",'P',pos}
         , m_alive{ true } 
