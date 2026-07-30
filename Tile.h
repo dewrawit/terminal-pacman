@@ -9,6 +9,7 @@ class Tile
     Position m_position{};
 
     public:
+    Tile() = default;
     Tile(char symbol, const Position& pos) 
         : m_symbol{ symbol }
         , m_position{ pos }

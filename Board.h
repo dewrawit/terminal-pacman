@@ -2,9 +2,8 @@
 
 #include "Position.h"
 #include "LevelInfo.h"
+#include "Tile.h"
 #include <array>
-
-struct Tile;
 
 class Board
 {
@@ -29,4 +28,8 @@ class Board
     }
     int getLength() const { return LevelInfo::mapLength; }
     int getHeight() const { return LevelInfo::mapHeight; }
+    Tile getTileAtPosition(std::size_t row, std::size_t col) const
+    {
+        return levelMap[row][col];
+    }
 };
