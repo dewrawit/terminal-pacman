@@ -14,11 +14,16 @@ namespace Game
     {
         //If pacman after moving in this direction a tile and hits a wall, it's invalid
         const Board& board { gameState.getBoard() };
-        const Position& currentPacmanPosition { gameState.getPacman().getPosition() };
+        const Position currentPacmanPosition { gameState.getPacman().getPosition() };
+        const Position newPosition { 
+            currentPacmanPosition + Entity::getDirectionOffset(direction) 
+        };
 
-        return board.getTileAtPosition (
-            currentPacmanPosition + Entity::getDirectionOffset(direction)
-        ).isWalkable();
+        //DEBUG
+        //std::cout << currentPacmanPosition << '\n';
+        //std::cout << newPosition << '\n';
+
+        return board.getTileAtPosition(newPosition).isWalkable();
     }
     Entity::Direction getDirectionPlayer(const GameState& gameState)
     {   
@@ -38,8 +43,6 @@ namespace Game
             {
                 continue;
             }
-
-            std::cout << "Pass the check\n";
 
             Entity::Direction directionInput {};
 

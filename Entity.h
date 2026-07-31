@@ -15,10 +15,10 @@ class Entity
     protected:
     static constexpr std::array directions
     {
-        std::pair{0,-1}, //Up
-        std::pair{0,1}, //Down
-        std::pair{-1,0}, //Left
-        std::pair{1,0}, //Right
+        std::pair{-1,0}, //Up
+        std::pair{1,0}, //Down
+        std::pair{0,-1}, //Left
+        std::pair{0,1}, //Right
     };
 
     private:

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 struct Position
 {
     int row{};
@@ -9,5 +11,10 @@ struct Position
     {
         auto [movRow, movCol] { direction };
         return Position{row + movRow, col + movCol};
+    }
+    friend std::ostream& operator<<(std::ostream& out, const Position& pos)
+    {
+        out << "(" << pos.row << "," << pos.col << ")";
+        return out;
     }
 };
