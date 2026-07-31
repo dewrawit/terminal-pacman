@@ -1,5 +1,6 @@
 
 #include "GameState.h"
+#include "Game.h"
 
 int main()
 {
@@ -7,5 +8,8 @@ int main()
     GameState gameState{board};
 
     gameState.getBoard().draw();
+
+    Game::getDirectionPlayer(gameState);
+    
     return 0;
 }

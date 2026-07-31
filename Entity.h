@@ -2,10 +2,21 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
+#include <array>
 #include "Position.h"
 
 class Entity
 {
+    protected:
+    static constexpr std::array directions
+    {
+        std::pair{0,-1}, //Up
+        std::pair{0,1}, //Down
+        std::pair{-1,0}, //Left
+        std::pair{1,0}, //Right
+    };
+
     public:
     enum class Direction { up, down, left, right, none };
 

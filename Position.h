@@ -2,6 +2,6 @@
 
 struct Position
 {
-    std::size_t x{};
-    std::size_t y{};
+    std::size_t row{};
+    std::size_t col{};
 };

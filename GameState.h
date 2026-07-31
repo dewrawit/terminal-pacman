@@ -63,4 +63,7 @@ class GameState
     }
     const Board& getBoard() const { return m_board; }
     Board& getBoard() { return m_board; }
+
+    const Pacman& getPacMan() const { return m_pacman; }
+    Pacman& getPacman() { return m_pacman; }
 };
