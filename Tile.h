@@ -22,4 +22,20 @@ class Tile
     bool isEmpty() const { return m_symbol == ' '; }
     bool isWalkable() const { return m_symbol != AsciiData::WallSymbol; }
     bool isWall() const { return m_symbol == AsciiData::WallSymbol; }
+    bool isNormalPellet() const { return m_symbol == AsciiData::NormalPelletSymbol; }
+    bool isSuperPellet() const { return m_symbol == AsciiData::SuperPelletSymbol; }
+    bool isPellet() const { return isNormalPellet() || isSuperPellet(); }
+    bool isGhost() const {
+        switch(m_symbol)
+        {
+            case AsciiData::BlinkySymbol:
+            case AsciiData::ClydeSymbol:
+            case AsciiData::InkySymbol:
+            case AsciiData::PinkySymbol:
+                return true;
+            default:
+                return false;
+        }
+    }
+    bool isPacman() const { return m_symbol == AsciiData::PacmanSymbol; }
 };
