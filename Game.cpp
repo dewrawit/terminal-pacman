@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "GameState.h"
 #include "Game.h"
+#include "Position.h"
 #include <iostream>
 #include <string>
 #include <cctype>
@@ -9,14 +10,18 @@ namespace Game
 {
     using uchar = unsigned char;
 
-    bool validDirection(Entity::Direction direction, const GameState& gamestate)
+    bool validDirection( Entity::Direction direction, const GameState& gameState)
     {
+        //If pacman after moving in this direction a tile and hits a wall, it's invalid
+        const Board& board { gameState.getBoard() };
+        const Position& currentPacmanPosition { gameState.getPacman().getPosition() };
 
+        return board.getTileAtPosition (
+            currentPacmanPosition + Entity::getDirectionOffset(direction)
+        ).isWalkable();
     }
     Entity::Direction getDirectionPlayer(const GameState& gameState)
-    {
-        const Pacman& pacman { gameState.getPacMan() };
-        
+    {   
         while(true)
         {
             std::cout << "Enter (W,A,S,D): ";
@@ -24,7 +29,7 @@ namespace Game
             std::getline(std::cin >> std::ws, input);
 
             //Remove trailing whitespace
-            while(std::isspace(static_cast<uchar>(input[input.length() - 1])))
+            while(std::isspace(static_cast<uchar>(input.back())))
             {
                 input.pop_back();
             }
@@ -33,6 +38,8 @@ namespace Game
             {
                 continue;
             }
+
+            std::cout << "Pass the check\n";
 
             Entity::Direction directionInput {};
 
@@ -47,6 +54,10 @@ namespace Game
 
             if(validDirection(directionInput, gameState))
                 return directionInput;
+            else
+            {
+                std::cout << "Cannot move there.\n";
+            }
         }
     }
 }

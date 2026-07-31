@@ -8,6 +8,10 @@
 
 class Entity
 {
+    //Direction enum must pair with directions pair array
+    public:
+    enum class Direction { up, down, left, right, none };
+
     protected:
     static constexpr std::array directions
     {
@@ -16,9 +20,6 @@ class Entity
         std::pair{-1,0}, //Left
         std::pair{1,0}, //Right
     };
-
-    public:
-    enum class Direction { up, down, left, right, none };
 
     private:
     using SV = std::string_view;
@@ -44,5 +45,11 @@ class Entity
     void setPosition(const Position& pos) { m_pos = pos; }
     
     Direction getDirection() const { return m_dir; }
-    void setDirection(const Direction& dir) { m_dir = dir; } 
+    void setDirection(Direction dir) { m_dir = dir; } 
+
+    //Should be callable even without object
+    static std::pair<int,int> getDirectionOffset(Direction dir)
+    { 
+        return directions[static_cast<std::size_t>(dir)];
+    } 
 };

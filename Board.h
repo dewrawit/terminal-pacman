@@ -20,25 +20,31 @@ class Board
     template <std::size_t Height>
     Board(const std::array<std::string_view,Height>& map)
     { 
-        for(auto row {0uz}; row < getHeight(); ++row)
+        for(auto row {0uz}; row < static_cast<std::size_t>(getHeight()); ++row)
         {
-            for(auto col {0uz}; col < getLength(); ++col)
+            for(auto col {0uz}; col < static_cast<std::size_t>(getLength()); ++col)
             {
-                levelMap[row][col] = Tile{ map[row][col], Position{row,col} };
+                levelMap[row][col] = Tile{ map[row][col], 
+                    Position{static_cast<int>(row),static_cast<int>(col)} 
+                };
             }
         }
     }
-    std::size_t getLength() const { return LevelInfo::mapLength; }
-    std::size_t getHeight() const { return LevelInfo::mapHeight; }
-    Tile getTileAtPosition(std::size_t row, std::size_t col) const
+    int getLength() const { return LevelInfo::mapLength; }
+    int getHeight() const { return LevelInfo::mapHeight; }
+    Tile getTileAtPosition(const Position& pos) const
     {
-        return levelMap[row][col];
+        return levelMap[static_cast<std::size_t>(pos.row)][static_cast<std::size_t>(pos.col)];
+    }
+    Tile getTileAtPosition(int row, int col) const
+    {
+        return levelMap[static_cast<std::size_t>(row)][static_cast<std::size_t>(col)];
     }
     void draw()
     {
-       for(auto row {0uz}; row < LevelInfo::mapHeight; ++row)
+       for(int row {0}; row < LevelInfo::mapHeight; ++row)
         {
-            for(auto col {0uz}; col < LevelInfo::mapLength; ++col)
+            for(int col {0}; col < LevelInfo::mapLength; ++col)
             {
                 std::print("{}",getTileAtPosition(row,col).getSymbol()); 
             }

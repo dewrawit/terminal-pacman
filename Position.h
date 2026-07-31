@@ -2,6 +2,12 @@
 
 struct Position
 {
-    std::size_t row{};
-    std::size_t col{};
+    int row{};
+    int col{};
+
+    Position operator+(std::pair<int,int> direction) const
+    {
+        auto [movRow, movCol] { direction };
+        return Position{row + movRow, col + movCol};
+    }
 };

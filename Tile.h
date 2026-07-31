@@ -20,5 +20,6 @@ class Tile
     Position getPosition() const { return m_position; }
     bool isOccupied() const { return m_symbol != ' '; }
     bool isEmpty() const { return m_symbol == ' '; }
+    bool isWalkable() const { return m_symbol != AsciiData::WallSymbol; }
     bool isWall() const { return m_symbol == AsciiData::WallSymbol; }
 };

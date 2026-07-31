@@ -23,9 +23,9 @@ class GameState
     //Game state must read board data to create entites at correct position
     GameState(const Board& board) : m_board{ board }
     {
-        for(auto row {0uz}; row < board.getHeight(); ++row)
+        for(int row {0}; row < board.getHeight(); ++row)
         {
-            for(auto col {0uz}; col < board.getLength(); ++col)
+            for(int col {0}; col < board.getLength(); ++col)
             {
                 Position currentPosition = Position{ row, col };
                 switch(board.getTileAtPosition(row,col).getSymbol())
@@ -64,6 +64,6 @@ class GameState
     const Board& getBoard() const { return m_board; }
     Board& getBoard() { return m_board; }
 
-    const Pacman& getPacMan() const { return m_pacman; }
+    const Pacman& getPacman() const { return m_pacman; }
     Pacman& getPacman() { return m_pacman; }
 };
