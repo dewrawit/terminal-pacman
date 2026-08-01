@@ -52,4 +52,9 @@ class Entity
     { 
         return directions[static_cast<std::size_t>(dir)];
     } 
+
+    void move(Direction dir) 
+    {
+        m_pos = m_pos + getDirectionOffset(dir);
+    }
 };

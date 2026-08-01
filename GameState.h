@@ -66,4 +66,13 @@ class GameState
 
     const Pacman& getPacman() const { return m_pacman; }
     Pacman& getPacman() { return m_pacman; }
+
+    const Ghost& ghostAt(const Position& pos) const
+    {
+
+    }
+    Ghost& ghostAt(const Position& pos) const
+    {
+        
+    }
 };

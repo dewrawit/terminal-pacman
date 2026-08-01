@@ -30,6 +30,8 @@ class Ghost : public Entity
 
     Position getTarget() const { return m_target; }
     virtual void setTarget(const Position& pos) { m_target = pos; }
+
+    bool isScared() const { return m_state == GhostState::scared; }
 };
 
 class Blinky : public Ghost

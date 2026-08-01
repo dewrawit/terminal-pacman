@@ -2,6 +2,8 @@
 #include "GameState.h"
 #include "Game.h"
 #include "Position.h"
+#include "AsciiData.h"
+#include "Tile.h"
 #include <iostream>
 #include <string>
 #include <cctype>
@@ -34,7 +36,7 @@ namespace Game
             std::getline(std::cin >> std::ws, input);
 
             //Remove trailing whitespace
-            while(std::isspace(static_cast<uchar>(input.back())))
+            while(!input.empty() && std::isspace(static_cast<uchar>(input.back())))
             {
                 input.pop_back();
             }
@@ -62,5 +64,21 @@ namespace Game
                 std::cout << "Cannot move there.\n";
             }
         }
+    }
+    void handlePacmanCollision(GameState& gameState)
+    {
+        Pacman& pacman { gameState.getPacman() };
+
+        Tile collidedTile { 
+            gameState.getBoard().getTileAtPosition(pacman.getPosition())
+        };
+
+        //Ghost should be highest priority
+        if(collidedTile.isGhost())
+        {
+            //Ghost at that position is scared or not
+            if()
+        }
+
     }
 }

@@ -11,17 +11,20 @@ int main()
     while(true)
     {
         gameState.getBoard().draw();
-        //Entity::Direction directionInput { Game::getDirectionPlayer(gameState) };
+        Entity::Direction directionInput { Game::getDirectionPlayer(gameState) };
 
-        //Move pacman
+        //Move pacman by changing position wihtout telling board yet (for collision check)
+        gameState.getPacman().move(directionInput);
         
-        //Check collision (also check win)
+        //Check collision (deduct live if collide ghost, also check win, if win, break)
+        //If die, deduct live, teleport pacman and ghost at beginning
+        //If out of live, break
 
         //Ghost AI shit
 
         //Ghost move
 
-        //Check collision again
+        //Check collision (same as pacman check collision)
     }
     
     
