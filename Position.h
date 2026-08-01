@@ -17,4 +17,8 @@ struct Position
         out << "(" << pos.row << "," << pos.col << ")";
         return out;
     }
+    bool operator==(const Position& pos)
+    {
+        return (row == pos.row) && (col == pos.col);
+    }
 };

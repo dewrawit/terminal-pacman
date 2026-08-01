@@ -19,6 +19,11 @@ int main()
         //Check collision (deduct live if collide ghost, also check win, if win, break)
         //If die, deduct live, teleport pacman and ghost at beginning
         //If out of live, break
+        Game::handlePacmanCollision(gameState);
+
+        //TBD gotta
+
+        
 
         //Ghost AI shit
 

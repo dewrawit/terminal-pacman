@@ -68,16 +68,32 @@ namespace Game
     void handlePacmanCollision(GameState& gameState)
     {
         Pacman& pacman { gameState.getPacman() };
-
+        const Position pacmanPosition { pacman.getPosition() };
+        
         Tile collidedTile { 
-            gameState.getBoard().getTileAtPosition(pacman.getPosition())
+            gameState.getBoard().getTileAtPosition(pacmanPosition)
         };
 
         //Ghost should be highest priority
         if(collidedTile.isGhost())
         {
-            //Ghost at that position is scared or not
-            if()
+            if(gameState.ghostAt(pacmanPosition).isScared())
+            {
+                //ghost die
+            }
+            else
+            {
+                //pacman die
+            }
+        }
+
+        if(collidedTile.isPellet())
+        {
+            gameState.removePelletAt(pacmanPosition);
+            if(collidedTile.isSuperPellet())
+            {
+                gameState.makeAllGhostsScared();
+            }
         }
 
     }

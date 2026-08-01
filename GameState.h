@@ -9,6 +9,8 @@
 #include <vector>
 #include <memory>
 #include <cassert>
+#include <algorithm>
+#include <ranges>
 
 class GameState
 {
@@ -69,10 +71,39 @@ class GameState
 
     const Ghost& ghostAt(const Position& pos) const
     {
+        auto ghostIt { std::ranges::find_if(m_ghosts,
+            [pos](const auto& ghostPtr) -> bool
+            {
+                return ghostPtr->getPosition() == pos;
+            }
+        )};
 
+        if(ghostIt == m_ghosts.end())
+        {
+            assert(false && "No ghost at this position");
+        }
+
+        return **ghostIt;
     }
-    Ghost& ghostAt(const Position& pos) const
+    Ghost& ghostAt(const Position& pos)
     {
-        
+        //Treat *this as const ref, then after calling the const ghostAt, drop the const
+        return const_cast<Ghost&>(std::as_const(*this).ghostAt(pos));
+    }
+    void removePelletAt(const Position& pos)
+    {
+        std::erase_if(m_pellets,
+            [pos](const Pellet& pellet) -> bool
+            {
+                return pellet.getPosition() == pos;
+            }
+        );
+    }
+    void makeAllGhostsScared()
+    {
+        for(auto& ghostPtr : m_ghosts)
+        {
+            ghostPtr->setState(Ghost::GhostState::scared);
+        }
     }
 };
