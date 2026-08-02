@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "LevelInfo.h"
 
 struct Position
 {
@@ -20,5 +21,14 @@ struct Position
     bool operator==(const Position& pos) const
     {
         return (row == pos.row) && (col == pos.col);
+    }
+    bool inBounds() const
+    {
+        return row >= 0 && row < LevelInfo::mapHeight
+        && col >= 0 && col < LevelInfo::mapLength;
+    }
+    bool outOfBounds() const
+    {
+        return !inBounds();
     }
 };

@@ -22,6 +22,13 @@ namespace Game
             currentPacmanPosition + Entity::getDirectionOffset(direction) 
         };
 
+        //Going into Side tunnel (valid) is the only way to make position out of bounds 
+        //Because wall block any other path
+        if(newPosition.outOfBounds()) 
+        {
+            return true;
+        }
+
         //DEBUG
         //std::cout << currentPacmanPosition << '\n';
         //std::cout << newPosition << '\n';

@@ -9,10 +9,10 @@ int main()
 
     while(true)
     {
+        //also TBD: teleport tile to opposite side
         gameState.renderBoard();
         Entity::Direction directionInput { Game::getDirectionPlayer(gameState) };
 
-        //Move pacman by changing position wihtout telling board yet (for collision check)
         gameState.getPacman().move(directionInput);
         
         //Check collision (deduct live if collide ghost, also check win, if win, break)

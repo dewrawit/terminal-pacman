@@ -4,8 +4,10 @@
 #include <string_view>
 #include <utility>
 #include <array>
+#include <cmath>
 #include "Position.h"
 #include "ColorData.h"
+#include "LevelInfo.h"
 
 class Entity
 {
@@ -59,7 +61,34 @@ class Entity
 
     void move(Direction dir) 
     {
+        //DEBUG
+        //std::cout << m_pos << std::endl;
+
         m_pos = m_pos + getDirectionOffset(dir);
+
+        //(column in bound is 0-27), length = 28
+        //so out of bound column is -1 or 28
+
+        //Side Tunnel check
+        if(m_pos.outOfBounds())
+        {
+            //Teleport to other side (same row, opposite column)
+            int newColumn {};
+
+            if(m_pos.col < LevelInfo::mapLength)
+            {
+                newColumn = LevelInfo::mapLength + m_pos.col;
+            }
+            else if(m_pos.col >= LevelInfo::mapLength)
+            {
+                newColumn = m_pos.col - LevelInfo::mapLength;
+            }
+
+            m_pos = Position{ m_pos.row, newColumn };
+
+            //DEBUG
+            //std::cout << m_pos << std::endl;
+        }
     }
 
     bool isAt(const Position& pos)
