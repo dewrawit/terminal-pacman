@@ -22,6 +22,7 @@ int main()
         Game::handlePacmanCollision(gameState);
 
         //TBD gotta update Tile, ghost scared cooldown blah blah blah
+        gameState.update();
 
         
 

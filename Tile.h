@@ -17,6 +17,7 @@ class Tile
     { }
 
     char getSymbol() const { return m_symbol; }
+    void setSymbol(char c) { m_symbol = c; }
     Position getPosition() const { return m_position; }
     bool isOccupied() const { return m_symbol != ' '; }
     bool isEmpty() const { return m_symbol == ' '; }

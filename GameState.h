@@ -106,30 +106,57 @@ class GameState
             ghostPtr->setState(Ghost::GhostState::scared);
         }
     }
-    void update()
+    void updateGhostTimer()
     {
-        //
+        //Handle Ghost Timer
         for(auto& ghostPtr : m_ghosts)
         {
-            switch(ghostPtr->getState())
+            //There is no timer for dead state, ghost respawn when it's corpse reaches house
+            if(ghostPtr->isDead())
             {
-                case Ghost::GhostState::chase: 
-                    if(ghostPtr->getTimer(Ghost::TimerTypes::chase).isActivated())
-                    {
-                        
-                    }
-                    ghostPtr->activateTimerState(Ghost::TimerTypes::chase);
-                case Ghost::GhostState::scared:
-                    ghostPtr->activateTimerState(Ghost::TimerTypes::scared);
-                case Ghost::GhostState::scatter:
-                    ghostPtr->activateTimerState(Ghost::TimerTypes::scatter);
-                case Ghost::GhostState::stalemate:
-                    ghostPtr->activateTimerState(Ghost::TimerTypes::stalemate);
-                case Ghost::GhostState::dead:
-                    break;
-                default:
-                    assert(false && "Detect invalid GhostState");
+                ghostPtr->deactivateAllTimer();
+                continue;
+            }
+            else
+            {
+                Ghost::GhostState currentGhostState { ghostPtr->getState() };
+                Timer& selectedTimer { ghostPtr->getTimer(currentGhostState) };
+
+                if(selectedTimer.isRunning())
+                {
+                    selectedTimer.decrement();
+                }
+                else
+                {
+                    selectedTimer.activateAndReset();
+                } 
             }
         }    
+    }
+    void updateTileData()
+    {
+        //Update Tile info
+        for(int row {0}; row < m_board.getHeight(); ++row)
+        {
+            for(int col {0}; col < m_board.getLength(); ++col)
+            {
+                Tile& tile = m_board.getTileAtPosition(row, col);
+
+                //Wall cannot be overwritten
+                if(tile.isWall())
+                    continue;
+
+                if(tile.isPellet() && 
+                m_pacman.isAt(row, col))
+                {
+                    tile.setSymbol(AsciiData::PacmanSymbol);
+                }
+            }
+        }
+    }
+    void update()
+    {
+        updateGhostTimer();
+        updateTileData();
     }
 };

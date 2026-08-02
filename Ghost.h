@@ -40,6 +40,7 @@ class Ghost : public Entity
     GhostState getState() const { return m_state; }
     void setState(const GhostState& state) { m_state = state; }
     bool isScared() const { return m_state == GhostState::scared; }
+    bool isDead() const { return m_state == GhostState::dead; }
 
     Position getTarget() const { return m_target; }
     virtual void setTarget(const Position& pos) { m_target = pos; }
@@ -69,6 +70,13 @@ class Ghost : public Entity
         }
 
         m_timers[type].activateAndReset();
+    }
+    void deactivateAllTimer()
+    {
+        for(auto& timer : m_timers)
+        {
+            timer.deactivateAndReset();
+        }
     }
 };
 

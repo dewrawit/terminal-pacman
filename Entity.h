@@ -57,4 +57,13 @@ class Entity
     {
         m_pos = m_pos + getDirectionOffset(dir);
     }
+
+    bool isAt(const Position& pos)
+    {
+        return m_pos == pos;
+    }
+    bool isAt(int row, int col)
+    {
+        return m_pos == Position{ row, col };
+    }
 };

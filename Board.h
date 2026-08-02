@@ -32,11 +32,19 @@ class Board
     }
     int getLength() const { return LevelInfo::mapLength; }
     int getHeight() const { return LevelInfo::mapHeight; }
-    Tile getTileAtPosition(const Position& pos) const
+    Tile& getTileAtPosition(const Position& pos)
     {
         return levelMap[static_cast<std::size_t>(pos.row)][static_cast<std::size_t>(pos.col)];
     }
-    Tile getTileAtPosition(int row, int col) const
+    const Tile& getTileAtPosition(const Position& pos) const
+    {
+        return levelMap[static_cast<std::size_t>(pos.row)][static_cast<std::size_t>(pos.col)];
+    }
+    Tile& getTileAtPosition(int row, int col)
+    {
+        return levelMap[static_cast<std::size_t>(row)][static_cast<std::size_t>(col)];
+    }
+    const Tile& getTileAtPosition(int row, int col) const
     {
         return levelMap[static_cast<std::size_t>(row)][static_cast<std::size_t>(col)];
     }

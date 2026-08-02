@@ -22,13 +22,9 @@ class Timer
     {
         return m_timer <= 0;
     }
-    bool isActivated() const
+    bool isRunning() const
     {
         return m_activated;
-    }
-    bool isDeactivated() const
-    {
-        return !isActivated();
     }
     bool activateAndReset()
     {
@@ -39,5 +35,13 @@ class Timer
     {
         m_activated = false;
         m_timer = m_maxDuration;
+    }
+    void pause()
+    {
+        m_activated = false;
+    }
+    void resume()
+    {
+        m_activated = true;
     }
 };
