@@ -106,4 +106,14 @@ class GameState
             ghostPtr->setState(Ghost::GhostState::scared);
         }
     }
+    void update()
+    {
+        for(auto& ghostPtr : m_ghosts)
+        {
+            if(ghostPtr->isScared())
+            {
+                
+            }
+        }    
+    }
 };
