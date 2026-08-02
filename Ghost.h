@@ -8,6 +8,7 @@
 #include "Position.h"
 #include "AsciiData.h"
 #include "Timer.h"
+#include "ColorData.h"
 
 class Ghost : public Entity
 {
@@ -27,8 +28,8 @@ class Ghost : public Entity
     public:
     virtual ~Ghost() = default; //Plan to make gamestate store unique_ptr to Ghost
     Ghost() = default;
-    Ghost(SV name, char symbol, const Position& pos)
-        : Entity{ name, symbol, pos }
+    Ghost(SV name, char symbol, const Position& pos, SV color)
+        : Entity{ name, symbol, pos, color }
         , m_state{ GhostState::stalemate }
     { 
         m_timers[TimerTypes::stalemate] = Timer(5);
@@ -84,7 +85,7 @@ class Blinky : public Ghost
 {
     public:
     Blinky(const Position& pos) 
-        : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos }
+        : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos, Color::RED }
     { }
 };
 
@@ -92,7 +93,8 @@ class Pinky : public Ghost
 {
     public:
     Pinky(const Position& pos) 
-        : Ghost{ "Pinky", AsciiData::PinkySymbol, pos } //'P' collides with Pac-man
+        : Ghost{ "Pinky", AsciiData::PinkySymbol, pos, Color::PINK } 
+        //'P' collides with Pac-man
     { }
 };
 
@@ -100,7 +102,7 @@ class Inky : public Ghost
 {
     public:
     Inky(const Position& pos) 
-        : Ghost{ "Inky", AsciiData::InkySymbol, pos }
+        : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN }
     { }
 };
 
@@ -108,6 +110,6 @@ class Clyde : public Ghost
 {
     public:
     Clyde(const Position& pos) 
-        : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos }
+        : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE }
     { }
 };

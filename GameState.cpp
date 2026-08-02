@@ -10,6 +10,7 @@
 #include "LevelInfo.h"
 #include "Position.h"
 #include "AsciiData.h"
+#include "ColorData.h"
 
 GameState::GameState(const AsciiMap& map) : m_board{ map }
 {
@@ -256,11 +257,31 @@ void GameState::renderBoard()
         {
             if(m_board.getTileAtPosition(row, col).isWall())
             {
-                std::print("{}",AsciiData::WallSymbol);
+                std::print("{}█{}", Color::WALLBLUE, Color::RESET);
             }
             else
             {
-                std::print("{}",getGameObjectSymbolAt(row, col));
+                //Either pacman, ghost, pellet or empty
+                char symbol { getGameObjectSymbolAt(row, col) };
+                std::string color{Color::RESET};
+
+                //Check which Color
+                switch(symbol)
+                {
+                    case AsciiData::NormalPelletSymbol:
+                    case AsciiData::SuperPelletSymbol:
+                    case AsciiData::EmptySymbol:
+                        break;
+
+                    case AsciiData::PacmanSymbol: 
+                        color = m_pacman.getColor(); 
+                        break;
+
+                    default: //Ghost
+                        color = ghostAt(Position{row, col}).getColor();
+                        break;
+                }
+                std::print("{}{}{}",color,symbol,Color::RESET);
             }
         }
         std::println();

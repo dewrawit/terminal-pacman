@@ -10,4 +10,5 @@ namespace AsciiData
     constexpr char NormalPelletSymbol {'.'};
     constexpr char SuperPelletSymbol {'o'};
     constexpr char WallSymbol {'#'};
+    constexpr char EmptySymbol {' '};
 }

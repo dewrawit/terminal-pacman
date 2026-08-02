@@ -5,6 +5,7 @@
 #include <utility>
 #include <array>
 #include "Position.h"
+#include "ColorData.h"
 
 class Entity
 {
@@ -28,18 +29,21 @@ class Entity
     char m_symbol{};
     Position m_pos{};
     Direction m_dir{Direction::none};
+    std::string m_color {Color::RESET};
 
     public:
     virtual ~Entity() = default;
     Entity() = default;
-    Entity(SV name, char symbol, const Position& pos)
+    Entity(SV name, char symbol, const Position& pos, SV color)
         : m_name{ name }
         , m_symbol{ symbol }
         , m_pos{ pos }
+        , m_color{ color }
     { }
 
     const std::string& getName() const { return m_name; }
     char getSymbol() const { return m_symbol; }
+    const std::string& getColor() const { return m_color; }
 
     Position getPosition() const { return m_pos; }
     void setPosition(const Position& pos) { m_pos = pos; }
