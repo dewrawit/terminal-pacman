@@ -26,7 +26,7 @@ class Timer
     {
         return m_activated;
     }
-    bool activateAndReset()
+    void activateAndReset()
     {
         m_activated = true;
         m_timer = m_maxDuration;

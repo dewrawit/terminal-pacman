@@ -146,7 +146,7 @@ class GameState
                 if(tile.isWall())
                     continue;
 
-                if(tile.isPellet() && 
+                if(tile.isWalkable() && 
                 m_pacman.isAt(row, col))
                 {
                     tile.setSymbol(AsciiData::PacmanSymbol);
