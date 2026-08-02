@@ -76,17 +76,18 @@ namespace Game
         };
 
         //Ghost should be highest priority
-        // if(collidedTile.isGhost())
-        // {
-        //     if(gameState.ghostAt(pacmanPosition).isScared())
-        //     {
-        //         gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
-        //     }
-        //     else
-        //     {
-        //         //pacman die
-        //     }
-        // }
+        if(gameState.containsGhostAt(pacmanPosition))
+        {
+            if(gameState.ghostAt(pacmanPosition).isScared())
+            {
+                gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
+            }
+            else
+            {
+                std::cout << "die" << std::endl;
+                assert(false && "check");
+            }
+        }
 
         if(gameState.containsPelletAt(pacmanPosition))
         {

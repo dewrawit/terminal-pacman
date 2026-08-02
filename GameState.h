@@ -32,11 +32,12 @@ public:
 
     const Ghost& ghostAt(const Position& pos) const;
     Ghost& ghostAt(const Position& pos);
+    bool containsGhostAt(const Position& pos) const;
 
     const Pellet& pelletAt(const Position& pos) const;
-
     void removePelletAt(const Position& pos);
     bool containsPelletAt(const Position& pos) const;
+
     void makeAllGhostsScared();
     void updateGhostTimer();
     void updateTileData();

@@ -94,7 +94,17 @@ Ghost& GameState::ghostAt(const Position& pos)
     //Treat *this as const ref, then after calling the const ghostAt, drop the const
     return const_cast<Ghost&>(std::as_const(*this).ghostAt(pos));
 }
-
+bool GameState::containsGhostAt(const Position& pos) const
+{
+    for(const auto& ghostPtr : m_ghosts)
+    {
+        if(ghostPtr->getPosition() == pos)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 const Pellet& GameState::pelletAt(const Position& pos) const
 {
     assert(containsPelletAt(pos) && "No pellet at this position");
@@ -122,12 +132,14 @@ void GameState::removePelletAt(const Position& pos)
 }
 bool GameState::containsPelletAt(const Position& pos) const
 {
-    auto it { std::ranges::find_if(m_pellets, [pos](const Pellet& pellet) -> bool
+    for(const auto& pellet : m_pellets)
+    {
+        if(pellet.getPosition() == pos)
         {
-            return pellet.getPosition() == pos;
-        })};
-    
-    return it != m_pellets.end();
+            return true;
+        }
+    }
+    return false;
 }
 
 void GameState::makeAllGhostsScared()
