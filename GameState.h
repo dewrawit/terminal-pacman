@@ -16,6 +16,7 @@ private:
     Pacman m_pacman{};
     std::vector<std::unique_ptr<Ghost>> m_ghosts{};
     std::vector<Pellet> m_pellets{};
+    int m_lives { 3 };
     using AsciiMap = std::array<std::string_view,LevelInfo::mapHeight>;
 
 public:
@@ -43,4 +44,6 @@ public:
     void renderBoard();
     char getGameObjectSymbolAt(const Position& pos);
     char getGameObjectSymbolAt(int row, int col);
+    bool win();
+    bool lose();
 };

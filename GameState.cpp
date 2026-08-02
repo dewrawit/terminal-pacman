@@ -232,6 +232,12 @@ char GameState::getGameObjectSymbolAt(int row, int col)
 }
 void GameState::renderBoard()
 {
+    //Seperator each turn to not clutter terminal
+    for(int i {0}; i < 20; ++i)
+    {
+        std::println();
+    }
+
     for(int row {0}; row < m_board.getHeight(); ++row)
     {
         for(int col {0}; col < m_board.getLength(); ++col)
@@ -247,4 +253,12 @@ void GameState::renderBoard()
         }
         std::println();
     }
+}
+bool GameState::win()
+{
+    return m_pellets.empty();
+}
+bool GameState::lose()
+{
+    return m_lives <= 0;
 }

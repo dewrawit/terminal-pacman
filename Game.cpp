@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <print>
 
 namespace Game
 {
@@ -96,5 +97,9 @@ namespace Game
             gameState.removePelletAt(pacmanPosition);
         }
 
+    }
+    void printWinMessage()
+    {
+        std::println("All pellets captured, you win!\n");
     }
 }

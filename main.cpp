@@ -20,6 +20,12 @@ int main()
         //If out of live, break
         Game::handlePacmanCollision(gameState);
 
+        if(gameState.win())
+        {
+            Game::printWinMessage();
+            break;
+        }
+
         //TBD gotta update Tile, ghost scared cooldown blah blah blah
         gameState.update();
 
@@ -31,7 +37,6 @@ int main()
 
         //Check collision (same as pacman check collision)
     }
-    
     
     return 0;
 }
