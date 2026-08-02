@@ -32,9 +32,15 @@ public:
     const Ghost& ghostAt(const Position& pos) const;
     Ghost& ghostAt(const Position& pos);
 
+    const Pellet& pelletAt(const Position& pos) const;
+
     void removePelletAt(const Position& pos);
+    bool containsPelletAt(const Position& pos) const;
     void makeAllGhostsScared();
     void updateGhostTimer();
     void updateTileData();
     void update();
+    void renderBoard();
+    char getGameObjectSymbolAt(const Position& pos);
+    char getGameObjectSymbolAt(int row, int col);
 };

@@ -5,12 +5,11 @@
 
 int main()
 {
-    Board board{LevelInfo::map};
-    GameState gameState{board};
+    GameState gameState{ LevelInfo::map };
 
     while(true)
     {
-        gameState.getBoard().draw();
+        gameState.renderBoard();
         Entity::Direction directionInput { Game::getDirectionPlayer(gameState) };
 
         //Move pacman by changing position wihtout telling board yet (for collision check)

@@ -5,6 +5,7 @@
 #include <cassert>
 #include <algorithm>
 #include <ranges>
+#include <print>
 
 #include "LevelInfo.h"
 #include "Position.h"
@@ -12,12 +13,12 @@
 
 GameState::GameState(const AsciiMap& map) : m_board{ map }
 {
-    for(int row {0}; row < LevelInfo::mapHeight; ++row)
+    for(int row {0}; row < m_board.getHeight(); ++row)
     {
-        for(int col {0}; col < LevelInfo::mapLength; ++col)
+        for(int col {0}; col < m_board.getLength(); ++col)
         {
             Position currentPosition = Position{ row, col };
-            switch(map[row][col])
+            switch(map[static_cast<std::size_t>(row)][static_cast<std::size_t>(col)])
             {
                 case AsciiData::PacmanSymbol:
                     m_pacman = Pacman{currentPosition};
@@ -94,6 +95,22 @@ Ghost& GameState::ghostAt(const Position& pos)
     return const_cast<Ghost&>(std::as_const(*this).ghostAt(pos));
 }
 
+const Pellet& GameState::pelletAt(const Position& pos) const
+{
+    assert(containsPelletAt(pos) && "No pellet at this position");
+
+    auto it { std::ranges::find_if(m_pellets, [pos](const Pellet& pellet) -> bool
+        {
+            return pellet.getPosition() == pos;
+        })};
+
+    if(it != m_pellets.end())
+    {
+        return *it;
+    }
+
+    assert(false && "No pellet at this Position 2");
+}
 void GameState::removePelletAt(const Position& pos)
 {
     std::erase_if(m_pellets,
@@ -102,6 +119,15 @@ void GameState::removePelletAt(const Position& pos)
             return pellet.getPosition() == pos;
         }
     );
+}
+bool GameState::containsPelletAt(const Position& pos) const
+{
+    auto it { std::ranges::find_if(m_pellets, [pos](const Pellet& pellet) -> bool
+        {
+            return pellet.getPosition() == pos;
+        })};
+    
+    return it != m_pellets.end();
 }
 
 void GameState::makeAllGhostsScared()
@@ -143,27 +169,82 @@ void GameState::updateGhostTimer()
 void GameState::updateTileData()
 {
     //Update Tile info
-    for(int row {0}; row < m_board.getHeight(); ++row)
-    {
-        for(int col {0}; col < m_board.getLength(); ++col)
-        {
-            Tile& tile = m_board.getTileAtPosition(row, col);
+    // for(int row {0}; row < m_board.getHeight(); ++row)
+    // {
+    //     for(int col {0}; col < m_board.getLength(); ++col)
+    //     {
+    //         Tile& tile = m_board.getTileAtPosition(row, col);
 
-            //Wall cannot be overwritten
-            if(tile.isWall())
-                continue;
+    //         //Wall cannot be overwritten
+    //         if(tile.isWall())
+    //             continue;
 
-            if(tile.isWalkable() &&
-            m_pacman.isAt(row, col))
-            {
-                tile.setSymbol(AsciiData::PacmanSymbol);
-            }
-        }
-    }
+    //         if(tile.isWalkable() &&
+    //         m_pacman.isAt(row, col))
+    //         {
+    //             tile.setSymbol(AsciiData::PacmanSymbol);
+    //         }
+    //     }
+    // }
 }
 
 void GameState::update()
 {
     updateGhostTimer();
     updateTileData();
+}
+char GameState::getGameObjectSymbolAt(const Position& pos)
+{
+    //Check Pellet
+    auto pelletIt { std::ranges::find_if(m_pellets, [pos](const Pellet& pellet) -> bool
+        {
+            return pellet.getPosition() == pos;
+        })};
+
+    if( pelletIt != m_pellets.end() )
+    {
+        return pelletIt->isSuperPellet() ? 
+        AsciiData::SuperPelletSymbol : AsciiData::NormalPelletSymbol;
+    }
+        
+    //Check Ghost
+    auto ghostIt { std::ranges::find_if(m_ghosts, [pos](const auto& ghostPtr) -> bool
+        {
+            return ghostPtr->getPosition() == pos;
+        })};
+
+    if(ghostIt != m_ghosts.end())
+    {
+        return (*ghostIt)->getSymbol();
+    }
+
+    //Check Pacman
+    if(m_pacman.getPosition() == pos)
+    {
+        return m_pacman.getSymbol();
+    }
+
+    return ' ';
+}
+char GameState::getGameObjectSymbolAt(int row, int col)
+{
+    return getGameObjectSymbolAt(Position{row, col});
+}
+void GameState::renderBoard()
+{
+    for(int row {0}; row < m_board.getHeight(); ++row)
+    {
+        for(int col {0}; col < m_board.getLength(); ++col)
+        {
+            if(m_board.getTileAtPosition(row, col).isWall())
+            {
+                std::print("{}",AsciiData::WallSymbol);
+            }
+            else
+            {
+                std::print("{}",getGameObjectSymbolAt(row, col));
+            }
+        }
+        std::println();
+    }
 }
