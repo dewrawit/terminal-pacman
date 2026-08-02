@@ -4,7 +4,6 @@
 #include "LevelInfo.h"
 #include "Tile.h"
 #include <array>
-#include <print>
 
 class Board
 {
@@ -24,7 +23,9 @@ class Board
         {
             for(auto col {0uz}; col < static_cast<std::size_t>(getLength()); ++col)
             {
-                levelMap[row][col] = Tile{ map[row][col], 
+                bool walkable{ map[row][col] == AsciiData::WallSymbol ? false : true };
+
+                levelMap[row][col] = Tile{ walkable, 
                     Position{static_cast<int>(row),static_cast<int>(col)} 
                 };
             }
@@ -48,15 +49,19 @@ class Board
     {
         return levelMap[static_cast<std::size_t>(row)][static_cast<std::size_t>(col)];
     }
-    void draw()
-    {
-       for(int row {0}; row < LevelInfo::mapHeight; ++row)
-        {
-            for(int col {0}; col < LevelInfo::mapLength; ++col)
-            {
-                std::print("{}",getTileAtPosition(row,col).getSymbol()); 
-            }
-            std::println();
-        } 
-    }
+
+    // A Tile shouldn't store entity symbol its pain in the ass when moving things
+    // Whoever thought about this should get a brain check (me)
+    // void draw()
+    // {
+    //    for(int row {0}; row < LevelInfo::mapHeight; ++row)
+    //     {
+    //         for(int col {0}; col < LevelInfo::mapLength; ++col)
+    //         {
+    //             std::print("{}",getTileAtPosition(row,col).getSymbol()); 
+    //         }
+    //         std::println();
+    //     } 
+    // }
+
 };
