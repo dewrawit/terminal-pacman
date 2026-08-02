@@ -42,8 +42,9 @@ GameState::GameState(const AsciiMap& map) : m_board{ map }
                 case AsciiData::SuperPelletSymbol:
                     m_pellets.emplace_back(currentPosition, Pellet::Type::super);
                     break;
-                case AsciiData::WallSymbol:
-                    break; //GameState do not need to store wall info (Tile can check wall)
+                //GameState do not need to store these info (Tile can check wall)
+                case AsciiData::WallSymbol: 
+                case AsciiData::GhostDoorSymbol:
                 case ' ':
                     break;
 
@@ -257,7 +258,14 @@ void GameState::renderBoard()
         {
             if(m_board.getTileAtPosition(row, col).isWall())
             {
-                std::print("{}█{}", Color::WALLBLUE, Color::RESET);
+                if(m_board.getTileAtPosition(row, col).isGhostDoor())
+                {
+                    std::print("{}={}", Color::WALLBLUE, Color::RESET);
+                }
+                else
+                {
+                    std::print("{}█{}", Color::WALLBLUE, Color::RESET);
+                }
             }
             else
             {

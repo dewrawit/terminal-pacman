@@ -24,10 +24,17 @@ class Board
         {
             for(auto col {0uz}; col < static_cast<std::size_t>(getLength()); ++col)
             {
-                bool walkable{ map[row][col] == AsciiData::WallSymbol ? false : true };
+                bool walkable{ 
+                    map[row][col] != AsciiData::WallSymbol && 
+                    map[row][col] != AsciiData::GhostDoorSymbol 
+                };
 
-                levelMap[row][col] = Tile{ walkable, 
-                    Position{static_cast<int>(row),static_cast<int>(col)} 
+                bool isGhostWall{ map[row][col] == AsciiData::GhostDoorSymbol };
+                
+                levelMap[row][col] = Tile{ 
+                    walkable, 
+                    Position{static_cast<int>(row),static_cast<int>(col)},
+                    isGhostWall
                 };
             }
         }
