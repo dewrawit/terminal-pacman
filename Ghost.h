@@ -15,7 +15,7 @@ class Ghost : public Entity
     enum class GhostState { stalemate, chase, scatter, scared, dead };
     enum TimerTypes { stalemate, chase, scatter, scared, maxTimerTypes };
     using GhostTimerArray = 
-    std::array<Timer,static_cast<std::size_t>(TimerTypes::maxTimerTypes)>;
+    std::array<Timer,TimerTypes::maxTimerTypes>;
 
     private:
     using SV = std::string_view;
@@ -39,13 +39,24 @@ class Ghost : public Entity
 
     GhostState getState() const { return m_state; }
     void setState(const GhostState& state) { m_state = state; }
+    bool isScared() const { return m_state == GhostState::scared; }
 
     Position getTarget() const { return m_target; }
     virtual void setTarget(const Position& pos) { m_target = pos; }
+    Timer& getTimer(TimerTypes type)
+    {
+        return m_timers[type];
+    }
+    void activateTimerState(TimerTypes type)
+    {
+        //Deactivate other timer (since ghost can only have one state at a time)
+        for(auto& timer : m_timers)
+        {
+            timer.deactivateAndReset();
+        }
 
-    bool isScared() const { return m_state == GhostState::scared; }
-
-    void startScaredTimer()
+        m_timers[type].activateAndReset();
+    }
 };
 
 class Blinky : public Ghost

@@ -79,7 +79,7 @@ namespace Game
         {
             if(gameState.ghostAt(pacmanPosition).isScared())
             {
-                //ghost die
+                gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
             }
             else
             {

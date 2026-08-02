@@ -110,9 +110,20 @@ class GameState
     {
         for(auto& ghostPtr : m_ghosts)
         {
-            if(ghostPtr->isScared())
+            switch(ghostPtr->getState())
             {
-                
+                case Ghost::GhostState::chase: 
+                    ghostPtr->activateTimerState(Ghost::TimerTypes::chase);
+                case Ghost::GhostState::scared:
+                    ghostPtr->activateTimerState(Ghost::TimerTypes::scared);
+                case Ghost::GhostState::scatter:
+                    ghostPtr->activateTimerState(Ghost::TimerTypes::scatter);
+                case Ghost::GhostState::stalemate:
+                    ghostPtr->activateTimerState(Ghost::TimerTypes::stalemate);
+                case Ghost::GhostState::dead:
+                    break;
+                default:
+                    assert(false && "Detect invalid GhostState");
             }
         }    
     }
