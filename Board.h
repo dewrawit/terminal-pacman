@@ -9,6 +9,8 @@ class Board
 {
     public:
     using GameMap = std::array<std::array<Tile,LevelInfo::mapLength>,LevelInfo::mapHeight>;
+    using AsciiMap = std::array<std::string_view,LevelInfo::mapHeight>;
+
 
     private:
     GameMap levelMap {};
@@ -16,8 +18,7 @@ class Board
     public:
     Board() = default;
 
-    template <std::size_t Height>
-    Board(const std::array<std::string_view,Height>& map)
+    Board(const AsciiMap& map)
     { 
         for(auto row {0uz}; row < static_cast<std::size_t>(getHeight()); ++row)
         {

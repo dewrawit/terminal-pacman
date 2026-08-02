@@ -1,13 +1,23 @@
 #include "GameState.h"
 
-GameState::GameState(const Board& board) : m_board{ board }
+#include <vector>
+#include <memory>
+#include <cassert>
+#include <algorithm>
+#include <ranges>
+
+#include "LevelInfo.h"
+#include "Position.h"
+#include "AsciiData.h"
+
+GameState::GameState(const AsciiMap& map) : m_board{ map }
 {
-    for(int row {0}; row < board.getHeight(); ++row)
+    for(int row {0}; row < LevelInfo::mapHeight; ++row)
     {
-        for(int col {0}; col < board.getLength(); ++col)
+        for(int col {0}; col < LevelInfo::mapLength; ++col)
         {
             Position currentPosition = Position{ row, col };
-            switch(board.getTileAtPosition(row,col).getSymbol())
+            switch(map[row][col])
             {
                 case AsciiData::PacmanSymbol:
                     m_pacman = Pacman{currentPosition};
