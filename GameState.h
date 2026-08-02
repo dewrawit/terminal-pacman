@@ -108,11 +108,16 @@ class GameState
     }
     void update()
     {
+        //
         for(auto& ghostPtr : m_ghosts)
         {
             switch(ghostPtr->getState())
             {
                 case Ghost::GhostState::chase: 
+                    if(ghostPtr->getTimer(Ghost::TimerTypes::chase).isActivated())
+                    {
+                        
+                    }
                     ghostPtr->activateTimerState(Ghost::TimerTypes::chase);
                 case Ghost::GhostState::scared:
                     ghostPtr->activateTimerState(Ghost::TimerTypes::scared);

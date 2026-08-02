@@ -26,6 +26,10 @@ class Timer
     {
         return m_activated;
     }
+    bool isDeactivated() const
+    {
+        return !isActivated();
+    }
     bool activateAndReset()
     {
         m_activated = true;

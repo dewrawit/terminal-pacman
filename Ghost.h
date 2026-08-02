@@ -43,10 +43,23 @@ class Ghost : public Entity
 
     Position getTarget() const { return m_target; }
     virtual void setTarget(const Position& pos) { m_target = pos; }
+    
     Timer& getTimer(TimerTypes type)
     {
         return m_timers[type];
     }
+    Timer& getTimer(GhostState state)
+    {
+        switch(state)
+        {
+            case GhostState::chase: return getTimer(TimerTypes::chase);
+            case GhostState::scared: return getTimer(TimerTypes::scared);
+            case GhostState::scatter: return getTimer(TimerTypes::scatter);
+            case GhostState::stalemate: return getTimer(TimerTypes::stalemate);
+            default: assert(false && "Cannot get timer of this ghost state.");
+        }
+    }
+
     void activateTimerState(TimerTypes type)
     {
         //Deactivate other timer (since ghost can only have one state at a time)
