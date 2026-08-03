@@ -4,7 +4,7 @@
 
 namespace Color
 {
-    constexpr std::string WALLBLUE = "\033[38;5;17m";
+    constexpr std::string WALLBLUE = "\033[38;5;19m";
     constexpr std::string SCAREDBLUE = "\033[46m"; //CYAN INSTEAD
     constexpr std::string RESET   = "\033[0m";
     constexpr std::string RED     = "\033[37;41m";
