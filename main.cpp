@@ -2,10 +2,13 @@
 #include "GameState.h"
 #include "Game.h"
 #include "Entity.h"
+#include "Timer.h"
+
 
 int main()
 {
     GameState gameState{ LevelInfo::map };
+    gameState.activateTimerState(Timer::TimerTypes::stalemate);
 
     while(true)
     {
@@ -28,8 +31,6 @@ int main()
 
         //TBD gotta update Tile, ghost scared cooldown blah blah blah
         gameState.update();
-
-        
 
         //Ghost AI shit
 

@@ -52,6 +52,12 @@ GameState::GameState(const AsciiMap& map) : m_board{ map }
             }
         }
     }
+
+    //Timers
+    m_globalTimers[Timer::TimerTypes::chase] = Timer(20, Timer::TimerTypes::chase);
+    m_globalTimers[Timer::TimerTypes::scatter] = Timer(10, Timer::TimerTypes::scatter);
+    m_globalTimers[Timer::TimerTypes::scared] = Timer(10, Timer::TimerTypes::scared);
+    m_globalTimers[Timer::TimerTypes::stalemate] = Timer(10, Timer::TimerTypes::stalemate);
 }
 
 const Board& GameState::getBoard() const
@@ -143,69 +149,89 @@ bool GameState::containsPelletAt(const Position& pos) const
     }
     return false;
 }
+bool GameState::oneTimerActive()
+{
+    int activeTimers{ 0 };
+    for(const auto& timer : m_globalTimers)
+    {
+        if(timer.isRunning())
+        {
+            ++activeTimers;
+        }
+    }
+    return activeTimers == 1;
+}
+Timer& GameState::getActiveTimer()
+{
+    assert(oneTimerActive() && "Detect multiple or no active timers in getActiveTimer()");
 
-void GameState::makeAllGhostsScared()
+    for(auto& timer : m_globalTimers)
+    {
+        if(timer.isRunning())
+        {
+            return timer;
+        }
+    }
+
+    assert(false && "This is here so compiler don't complain no return type");
+}
+void GameState::makeAllGhosts(Ghost::GhostState state)
 {
     for(auto& ghostPtr : m_ghosts)
     {
-        ghostPtr->setState(Ghost::GhostState::scared);
+        ghostPtr->setState(state);
     }
 }
-
-void GameState::updateGhostTimer()
+void GameState::applyGhostCurrentTimerEffect()
 {
-    //Handle Ghost Timer
-    for(auto& ghostPtr : m_ghosts)
+    assert(oneTimerActive() && "Detect multiple active timers in applyGhostTimerEffect()");
+
+    const Timer& activeTimer { getActiveTimer() };
+
+    Ghost::GhostState stateToActive{};
+
+    switch(activeTimer.getType())
     {
-        //There is no timer for dead state, ghost respawn when it's corpse reaches house
-        if(ghostPtr->isDead())
-        {
-            ghostPtr->deactivateAllTimer();
-            continue;
-        }
-        else
-        {
-            Ghost::GhostState currentGhostState { ghostPtr->getState() };
-            Timer& selectedTimer { ghostPtr->getTimer(currentGhostState) };
+        case Timer::TimerTypes::chase: stateToActive = Ghost::GhostState::chase; break;
+        case Timer::TimerTypes::scatter: stateToActive = Ghost::GhostState::scatter; break;
+        case Timer::TimerTypes::scared: stateToActive = Ghost::GhostState::scared; break;
+        case Timer::TimerTypes::stalemate: stateToActive = Ghost::GhostState::stalemate; break;
+        default: assert(false && "Invalid timer type in applyGhostTimerEffect()");
+    }
 
-            if(selectedTimer.isRunning())
-            {
-                selectedTimer.decrement();
-            }
-            else
-            {
-                selectedTimer.activateAndReset();
-            }
+    makeAllGhosts(stateToActive);
+}
+void GameState::updateTimer()
+{
+    assert(oneTimerActive() && "Detect multiple active timers in updateTimer()");
+
+    Timer& activeTimer { getActiveTimer() };
+    activeTimer.decrement();
+
+    if(activeTimer.timeout())
+    {
+        switch(activeTimer.getType())
+        {
+            case Timer::TimerTypes::chase: 
+                activateTimerState(Timer::TimerTypes::scatter);
+                break;
+            case Timer::TimerTypes::scatter: 
+                activateTimerState(Timer::TimerTypes::chase);
+                break;
+            case Timer::TimerTypes::scared: 
+                activateTimerState(Timer::TimerTypes::chase);
+                break;
+            case Timer::TimerTypes::stalemate: 
+                activateTimerState(Timer::TimerTypes::scatter);
+                break;
+            default: assert(false && "Invalid TimerType in updateTimer()"); break;
         }
     }
 }
-
-void GameState::updateTileData()
-{
-    //Update Tile info
-    // for(int row {0}; row < m_board.getHeight(); ++row)
-    // {
-    //     for(int col {0}; col < m_board.getLength(); ++col)
-    //     {
-    //         Tile& tile = m_board.getTileAtPosition(row, col);
-
-    //         //Wall cannot be overwritten
-    //         if(tile.isWall())
-    //             continue;
-
-    //         if(tile.isWalkable() &&
-    //         m_pacman.isAt(row, col))
-    //         {
-    //             tile.setSymbol(AsciiData::PacmanSymbol);
-    //         }
-    //     }
-    // }
-}
-
 void GameState::update()
 {
-    updateGhostTimer();
-    updateTileData();
+    updateTimer();
+    applyGhostCurrentTimerEffect();
 }
 char GameState::getGameObjectSymbolAt(const Position& pos)
 {
@@ -286,7 +312,14 @@ void GameState::renderBoard()
                         break;
 
                     default: //Ghost
-                        color = ghostAt(Position{row, col}).getColor();
+                        if(ghostAt(Position{row, col}).isScared())
+                        {
+                            color = Color::SCAREDBLUE;
+                        }
+                        else
+                        {
+                            color = ghostAt(Position{row, col}).getColor();
+                        } 
                         break;
                 }
                 std::print("{}{}{}",color,symbol,Color::RESET);
@@ -302,4 +335,18 @@ bool GameState::win()
 bool GameState::lose()
 {
     return m_lives <= 0;
+}
+Timer& GameState::getTimer(Timer::TimerTypes type)
+{
+    return m_globalTimers[type];
+}
+void GameState::activateTimerState(Timer::TimerTypes type)
+{
+    //Deactivate other timer (since ghost can only have one state at a time)
+    for(auto& timer : m_globalTimers)
+    {
+        timer.deactivateAndReset();
+    }
+
+    m_globalTimers[type].activateAndReset();
 }

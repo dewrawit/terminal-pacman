@@ -3,14 +3,22 @@
 
 class Timer
 {
+    public:
+    enum TimerTypes { stalemate, chase, scatter, scared, maxTimerTypes };
+
     private:
     int m_maxDuration{};
     int m_timer{};
     bool m_activated { false };
+    TimerTypes m_type {};
 
     public:
     Timer() = default;
-    Timer(int maxSeconds) : m_maxDuration{ maxSeconds }, m_timer{ m_maxDuration } {}
+    Timer(int maxSeconds, TimerTypes type) 
+        : m_maxDuration{ maxSeconds }
+        , m_timer{ m_maxDuration }
+        , m_type{ type } 
+        { }
     
     void decrement()
     {
@@ -25,6 +33,10 @@ class Timer
     bool isRunning() const
     {
         return m_activated;
+    }
+    bool isPaused() const
+    {
+        return !isRunning();
     }
     void activateAndReset()
     {
@@ -43,5 +55,9 @@ class Timer
     void resume()
     {
         m_activated = true;
+    }
+    TimerTypes getType() const
+    {
+        return m_type;
     }
 };

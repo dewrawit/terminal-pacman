@@ -100,7 +100,7 @@ namespace Game
         {
             if(gameState.pelletAt(pacmanPosition).isSuperPellet())
             {
-                gameState.makeAllGhostsScared();
+                gameState.activateTimerState(Timer::TimerTypes::scared);
             }
             gameState.removePelletAt(pacmanPosition);
         }

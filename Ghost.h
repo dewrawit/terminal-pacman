@@ -14,16 +14,12 @@ class Ghost : public Entity
 {
     public:
     enum class GhostState { stalemate, chase, scatter, scared, dead };
-    enum TimerTypes { stalemate, chase, scatter, scared, maxTimerTypes };
-    using GhostTimerArray = 
-    std::array<Timer,TimerTypes::maxTimerTypes>;
 
     private:
     using SV = std::string_view;
 
     GhostState m_state{ GhostState::stalemate };
     Position m_target{};
-    GhostTimerArray m_timers{};
 
     public:
     virtual ~Ghost() = default; //Plan to make gamestate store unique_ptr to Ghost
@@ -31,12 +27,7 @@ class Ghost : public Entity
     Ghost(SV name, char symbol, const Position& pos, SV color)
         : Entity{ name, symbol, pos, color }
         , m_state{ GhostState::stalemate }
-    { 
-        m_timers[TimerTypes::stalemate] = Timer(5);
-        m_timers[TimerTypes::chase] = Timer(20);
-        m_timers[TimerTypes::scatter] = Timer(10);
-        m_timers[TimerTypes::scared] = Timer(10);
-    }
+    { }
 
     GhostState getState() const { return m_state; }
     void setState(const GhostState& state) { m_state = state; }
@@ -46,39 +37,7 @@ class Ghost : public Entity
     Position getTarget() const { return m_target; }
     virtual void setTarget(const Position& pos) { m_target = pos; }
     
-    Timer& getTimer(TimerTypes type)
-    {
-        return m_timers[type];
-    }
-    Timer& getTimer(GhostState state)
-    {
-        switch(state)
-        {
-            case GhostState::chase: return getTimer(TimerTypes::chase);
-            case GhostState::scared: return getTimer(TimerTypes::scared);
-            case GhostState::scatter: return getTimer(TimerTypes::scatter);
-            case GhostState::stalemate: return getTimer(TimerTypes::stalemate);
-            default: assert(false && "Cannot get timer of this ghost state.");
-        }
-    }
-
-    void activateTimerState(TimerTypes type)
-    {
-        //Deactivate other timer (since ghost can only have one state at a time)
-        for(auto& timer : m_timers)
-        {
-            timer.deactivateAndReset();
-        }
-
-        m_timers[type].activateAndReset();
-    }
-    void deactivateAllTimer()
-    {
-        for(auto& timer : m_timers)
-        {
-            timer.deactivateAndReset();
-        }
-    }
+    
 };
 
 class Blinky : public Ghost
