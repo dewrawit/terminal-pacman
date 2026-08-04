@@ -4,12 +4,12 @@
 #include <string_view>
 #include <vector>
 
-#include "Entity.h"
-#include "Position.h"
-#include "AsciiData.h"
-#include "Timer.h"
-#include "ColorData.h"
-#include "LevelInfo.h"
+#include "../Entity.h"
+#include "../Position.h"
+#include "../AsciiData.h"
+#include "../Timer.h"
+#include "../ColorData.h"
+#include "../LevelInfo.h"
 
 class Ghost : public Entity
 {
@@ -54,38 +54,10 @@ class Ghost : public Entity
             m_pos = Position{ LevelInfo::ghostSpawnRow, LevelInfo::ghostSpawnCol };
             setState(GhostState::scatter);
         }
-    }
-    
-    
+    }   
 };
 
-class Blinky : public Ghost
-{
-    public:
-    Blinky(const Position& pos) 
-        : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos, Color::RED, 
-            Timer(0, Timer::TimerTypes::stalemate)}
-    { }
-};
 
-class Pinky : public Ghost
-{
-    public:
-    Pinky(const Position& pos) 
-        : Ghost{ "Pinky", AsciiData::PinkySymbol, pos, Color::PINK,
-            Timer(10, Timer::TimerTypes::stalemate)} 
-        
-    { }
-};
-
-class Inky : public Ghost
-{
-    public:
-    Inky(const Position& pos) 
-        : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN,
-            Timer(20, Timer::TimerTypes::stalemate)}
-    { }
-};
 
 class Clyde : public Ghost
 {

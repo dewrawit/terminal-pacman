@@ -31,7 +31,7 @@ class Entity
     std::string m_name{};
     char m_symbol{};
     Position m_pos{};
-    Direction m_dir{Direction::none};
+    Direction m_facingDirection{Direction::none};
     std::string m_color {Color::RESET};
 
     public:
@@ -51,8 +51,8 @@ class Entity
     Position getPosition() const { return m_pos; }
     void setPosition(const Position& pos) { m_pos = pos; }
     
-    Direction getDirection() const { return m_dir; }
-    void setDirection(Direction dir) { m_dir = dir; }
+    Direction getDirection() const { return m_facingDirection; }
+    void setDirection(Direction dir) { m_facingDirection = dir; }
 
     static Direction getRandomDirection()
     {
@@ -95,6 +95,8 @@ class Entity
             //DEBUG
             //std::cout << m_pos << std::endl;
         }
+
+        m_facingDirection = dir;
     }
 
     bool isAt(const Position& pos)

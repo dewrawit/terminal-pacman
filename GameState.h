@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Pacman.h"
-#include "Ghost.h"
+#include "ghosts/AllGhosts.h"
 #include "Board.h"
 #include "Pellet.h"
 #include "LevelInfo.h"
