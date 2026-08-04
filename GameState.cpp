@@ -23,18 +23,23 @@ GameState::GameState(const AsciiMap& map) : m_board{ map }
             {
                 case AsciiData::PacmanSymbol:
                     m_pacman = Pacman{currentPosition};
+                    m_spawnPoints[Character::pacman] = currentPosition;
                     break;
                 case AsciiData::BlinkySymbol:
-                    m_ghosts.push_back(std::make_unique<Blinky>(currentPosition));
+                    m_ghosts.emplace_back(std::make_unique<Blinky>(currentPosition));
+                    m_spawnPoints[Character::blinky] = currentPosition;
                     break;
                 case AsciiData::PinkySymbol:
-                    m_ghosts.push_back(std::make_unique<Pinky>(currentPosition));
+                    m_ghosts.emplace_back(std::make_unique<Pinky>(currentPosition));
+                    m_spawnPoints[Character::pinky] = currentPosition;
                     break;
                 case AsciiData::InkySymbol:
-                    m_ghosts.push_back(std::make_unique<Inky>(currentPosition));
+                    m_ghosts.emplace_back(std::make_unique<Inky>(currentPosition));
+                    m_spawnPoints[Character::inky] = currentPosition;
                     break;
                 case AsciiData::ClydeSymbol:
-                    m_ghosts.push_back(std::make_unique<Clyde>(currentPosition));
+                    m_ghosts.emplace_back(std::make_unique<Clyde>(currentPosition));
+                    m_spawnPoints[Character::clyde] = currentPosition;
                     break;
                 case AsciiData::NormalPelletSymbol:
                     m_pellets.emplace_back(currentPosition, Pellet::Type::normal);
@@ -80,6 +85,16 @@ const Pacman& GameState::getPacman() const
 Pacman& GameState::getPacman()
 {
     return m_pacman;
+}
+
+std::vector<std::unique_ptr<Ghost>>& GameState::getGhosts()
+{
+    return m_ghosts;
+}
+
+const std::vector<std::unique_ptr<Ghost>>& GameState::getGhosts() const
+{
+    return m_ghosts;
 }
 
 const Ghost& GameState::ghostAt(const Position& pos) const
@@ -203,6 +218,7 @@ void GameState::applyGhostCurrentTimerEffect()
 
     makeAllGhosts(stateToActive);
 
+    //Some ghost might still have thier waiting timer active
     for(auto& ghostPtr : m_ghosts)
     {
         if(!(ghostPtr->getWaitTimer().timeout()))
@@ -293,6 +309,7 @@ void GameState::renderBoard()
         std::println();
     }
 
+    std::println("Lives: {}", getLives());
     for(int row {0}; row < m_board.getHeight(); ++row)
     {
         for(int col {0}; col < m_board.getLength(); ++col)
@@ -371,4 +388,37 @@ void GameState::startGhostsWaitTimer()
     {
         ghostPtr->getWaitTimer().activateAndReset();
     }
+}
+int GameState::getLives() const
+{
+    return m_lives;
+}
+void GameState::loseALife()
+{
+    --m_lives;
+}
+void GameState::respawn()
+{
+    m_pacman.setPosition(m_spawnPoints[Character::pacman]);
+
+    for(auto& ghostPtr : m_ghosts)
+    {
+        switch(ghostPtr->getSymbol())
+        {
+            case AsciiData::BlinkySymbol:
+                ghostPtr->setPosition(m_spawnPoints[Character::blinky]);
+                break;
+            case AsciiData::PinkySymbol:
+                ghostPtr->setPosition(m_spawnPoints[Character::pinky]);
+                break;  
+            case AsciiData::InkySymbol:
+                ghostPtr->setPosition(m_spawnPoints[Character::inky]);
+                break;
+            case AsciiData::ClydeSymbol:
+                ghostPtr->setPosition(m_spawnPoints[Character::clyde]);
+                break;
+        }
+    }
+
+    //Gotta restart ghost stalemate timer too TBD
 }

@@ -5,6 +5,7 @@ namespace Game
 {
     bool validDirection( Entity::Direction direction, const GameState& gameState);
     Entity::Direction getDirectionPlayer(const GameState& gameState);
-    void handlePacmanCollision(GameState& gameState);
+    bool handlePacmanCollision(GameState& gameState);
     void printWinMessage();
+    void printLoseMessage();
 }

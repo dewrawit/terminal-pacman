@@ -6,6 +6,7 @@
 #include "Pellet.h"
 #include "LevelInfo.h"
 #include "Timer.h"
+#include "Position.h"
 #include <memory>
 #include <vector>
 #include <array>
@@ -14,6 +15,7 @@ class GameState
 {
 public:
     using TimerArray = std::array<Timer,Timer::TimerTypes::maxTimerTypes>;
+    enum Character { pacman, blinky, pinky, inky, clyde, maxCharacter };
 
 private:
     Board m_board{};
@@ -23,6 +25,9 @@ private:
     TimerArray m_globalTimers{};
     int m_lives { 3 };
     using AsciiMap = std::array<std::string_view,LevelInfo::mapHeight>;
+
+    std::array<Position, Character::maxCharacter> m_spawnPoints{};
+    
 
 public:
 
@@ -34,6 +39,9 @@ public:
 
     const Pacman& getPacman() const;
     Pacman& getPacman();
+
+    std::vector<std::unique_ptr<Ghost>>& getGhosts();
+    const std::vector<std::unique_ptr<Ghost>>& getGhosts() const;
 
     const Ghost& ghostAt(const Position& pos) const;
     Ghost& ghostAt(const Position& pos);
@@ -58,4 +66,7 @@ public:
     Timer& getActiveTimer();
     void activateTimerState(Timer::TimerTypes type);
     void startGhostsWaitTimer();
+    int getLives() const;
+    void loseALife();
+    void respawn();
 };

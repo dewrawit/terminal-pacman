@@ -73,7 +73,7 @@ namespace Game
             }
         }
     }
-    void handlePacmanCollision(GameState& gameState)
+    bool handlePacmanCollision(GameState& gameState)
     {
         Pacman& pacman { gameState.getPacman() };
         const Position pacmanPosition { pacman.getPosition() };
@@ -83,16 +83,18 @@ namespace Game
         };
 
         //Ghost should be highest priority
-        if(gameState.containsGhostAt(pacmanPosition))
+        for(auto& ghostPtr : gameState.getGhosts())
         {
-            if(gameState.ghostAt(pacmanPosition).isScared())
+            if(ghostPtr->getPosition() == pacmanPosition)
             {
-                gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
-            }
-            else
-            {
-                std::cout << "die" << std::endl;
-                assert(false && "check");
+                if(gameState.ghostAt(pacmanPosition).isScared())
+                {
+                    gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
 
@@ -105,9 +107,14 @@ namespace Game
             gameState.removePelletAt(pacmanPosition);
         }
 
+        return false;
     }
     void printWinMessage()
     {
         std::println("All pellets captured, you win!\n");
+    }
+    void printLoseMessage()
+    {
+        std::println("Out of lives, you lose!\n");
     }
 }

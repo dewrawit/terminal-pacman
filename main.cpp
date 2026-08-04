@@ -7,6 +7,8 @@
 
 int main()
 {
+    constexpr bool contactWithNonScaredGhost { true };
+    
     GameState gameState{ LevelInfo::map };
     gameState.activateTimerState(Timer::TimerTypes::scatter);
     gameState.startGhostsWaitTimer();
@@ -22,7 +24,19 @@ int main()
         //Check collision (deduct live if collide ghost, also check win, if win, break)
         //If die, deduct live, teleport pacman and ghost at beginning
         //If out of live, break
-        Game::handlePacmanCollision(gameState);
+        
+        if(Game::handlePacmanCollision(gameState) == contactWithNonScaredGhost)
+        {
+            //reset level, lose a life, check loss
+            gameState.loseALife();
+            if(gameState.lose())
+            {
+                Game::printLoseMessage();
+                break;
+            }
+            gameState.respawn();
+            continue;
+        }
 
         if(gameState.win())
         {
