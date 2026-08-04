@@ -34,5 +34,6 @@ namespace LevelInfo
     constexpr int mapLength = map[0].length();
     constexpr int mapHeight = map.size();
 
-    
+    constexpr int ghostSpawnRow = 8;
+    constexpr int ghostSpawnCol = 14;
 }

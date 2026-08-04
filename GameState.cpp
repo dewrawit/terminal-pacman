@@ -57,7 +57,9 @@ GameState::GameState(const AsciiMap& map) : m_board{ map }
     m_globalTimers[Timer::TimerTypes::chase] = Timer(20, Timer::TimerTypes::chase);
     m_globalTimers[Timer::TimerTypes::scatter] = Timer(10, Timer::TimerTypes::scatter);
     m_globalTimers[Timer::TimerTypes::scared] = Timer(10, Timer::TimerTypes::scared);
-    m_globalTimers[Timer::TimerTypes::stalemate] = Timer(10, Timer::TimerTypes::stalemate);
+
+    //Each ghost has it's own stalemate timer
+    //m_globalTimers[Timer::TimerTypes::stalemate] = Timer(40, Timer::TimerTypes::stalemate);
 }
 
 const Board& GameState::getBoard() const
@@ -195,11 +197,19 @@ void GameState::applyGhostCurrentTimerEffect()
         case Timer::TimerTypes::chase: stateToActive = Ghost::GhostState::chase; break;
         case Timer::TimerTypes::scatter: stateToActive = Ghost::GhostState::scatter; break;
         case Timer::TimerTypes::scared: stateToActive = Ghost::GhostState::scared; break;
-        case Timer::TimerTypes::stalemate: stateToActive = Ghost::GhostState::stalemate; break;
+        //case Timer::TimerTypes::stalemate: stateToActive = Ghost::GhostState::stalemate; break;
         default: assert(false && "Invalid timer type in applyGhostTimerEffect()");
     }
 
     makeAllGhosts(stateToActive);
+
+    for(auto& ghostPtr : m_ghosts)
+    {
+        if(!(ghostPtr->getWaitTimer().timeout()))
+        {
+            ghostPtr->setState(Ghost::GhostState::stalemate);
+        }
+    }
 }
 void GameState::updateTimer()
 {
@@ -208,6 +218,7 @@ void GameState::updateTimer()
     Timer& activeTimer { getActiveTimer() };
     activeTimer.decrement();
 
+    //Change active timer if the last one timeout
     if(activeTimer.timeout())
     {
         switch(activeTimer.getType())
@@ -221,9 +232,9 @@ void GameState::updateTimer()
             case Timer::TimerTypes::scared: 
                 activateTimerState(Timer::TimerTypes::chase);
                 break;
-            case Timer::TimerTypes::stalemate: 
-                activateTimerState(Timer::TimerTypes::scatter);
-                break;
+            // case Timer::TimerTypes::stalemate: 
+            //     activateTimerState(Timer::TimerTypes::scatter);
+            //     break;
             default: assert(false && "Invalid TimerType in updateTimer()"); break;
         }
     }
@@ -232,6 +243,10 @@ void GameState::update()
 {
     updateTimer();
     applyGhostCurrentTimerEffect();
+    for(auto& ghostPtr : m_ghosts)
+    {
+        ghostPtr->decrementWaitTimer();
+    }
 }
 char GameState::getGameObjectSymbolAt(const Position& pos)
 {
@@ -328,11 +343,11 @@ void GameState::renderBoard()
         std::println();
     }
 }
-bool GameState::win()
+bool GameState::win() const
 {
     return m_pellets.empty();
 }
-bool GameState::lose()
+bool GameState::lose() const
 {
     return m_lives <= 0;
 }
@@ -349,4 +364,11 @@ void GameState::activateTimerState(Timer::TimerTypes type)
     }
 
     m_globalTimers[type].activateAndReset();
+}
+void GameState::startGhostsWaitTimer()
+{
+    for(auto& ghostPtr : m_ghosts)
+    {
+        ghostPtr->getWaitTimer().activateAndReset();
+    }
 }

@@ -49,12 +49,13 @@ public:
     void renderBoard();
     char getGameObjectSymbolAt(const Position& pos);
     char getGameObjectSymbolAt(int row, int col);
-    bool win();
-    bool lose();
+    bool win() const;
+    bool lose() const;
     bool oneTimerActive(); //for assert check, only 1 global timer must run at a time
     void applyGhostCurrentTimerEffect();
 
     Timer& getTimer(Timer::TimerTypes type); 
     Timer& getActiveTimer();
     void activateTimerState(Timer::TimerTypes type);
+    void startGhostsWaitTimer();
 };

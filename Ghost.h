@@ -9,6 +9,7 @@
 #include "AsciiData.h"
 #include "Timer.h"
 #include "ColorData.h"
+#include "LevelInfo.h"
 
 class Ghost : public Entity
 {
@@ -20,13 +21,15 @@ class Ghost : public Entity
 
     GhostState m_state{ GhostState::stalemate };
     Position m_target{};
+    Timer m_releaseTimer{};
 
     public:
     virtual ~Ghost() = default; //Plan to make gamestate store unique_ptr to Ghost
     Ghost() = default;
-    Ghost(SV name, char symbol, const Position& pos, SV color)
+    Ghost(SV name, char symbol, const Position& pos, SV color, const Timer& releaseTimer)
         : Entity{ name, symbol, pos, color }
         , m_state{ GhostState::stalemate }
+        , m_releaseTimer{ releaseTimer }
     { }
 
     GhostState getState() const { return m_state; }
@@ -36,6 +39,22 @@ class Ghost : public Entity
 
     Position getTarget() const { return m_target; }
     virtual void setTarget(const Position& pos) { m_target = pos; }
+    Timer& getWaitTimer() { return m_releaseTimer; }
+    void decrementWaitTimer()
+    {
+        if(m_state != GhostState::stalemate)
+            return;
+
+        assert(m_releaseTimer.isRunning() && "Ghost wait timer is not running");
+
+        m_releaseTimer.decrement();
+
+        if(m_releaseTimer.timeout())
+        {
+            m_pos = Position{ LevelInfo::ghostSpawnRow, LevelInfo::ghostSpawnCol };
+            setState(GhostState::scatter);
+        }
+    }
     
     
 };
@@ -44,7 +63,8 @@ class Blinky : public Ghost
 {
     public:
     Blinky(const Position& pos) 
-        : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos, Color::RED }
+        : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos, Color::RED, 
+            Timer(0, Timer::TimerTypes::stalemate)}
     { }
 };
 
@@ -52,8 +72,9 @@ class Pinky : public Ghost
 {
     public:
     Pinky(const Position& pos) 
-        : Ghost{ "Pinky", AsciiData::PinkySymbol, pos, Color::PINK } 
-        //'P' collides with Pac-man
+        : Ghost{ "Pinky", AsciiData::PinkySymbol, pos, Color::PINK,
+            Timer(10, Timer::TimerTypes::stalemate)} 
+        
     { }
 };
 
@@ -61,7 +82,8 @@ class Inky : public Ghost
 {
     public:
     Inky(const Position& pos) 
-        : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN }
+        : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN,
+            Timer(20, Timer::TimerTypes::stalemate)}
     { }
 };
 
@@ -69,6 +91,7 @@ class Clyde : public Ghost
 {
     public:
     Clyde(const Position& pos) 
-        : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE }
+        : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE,
+            Timer(30, Timer::TimerTypes::stalemate)}
     { }
 };

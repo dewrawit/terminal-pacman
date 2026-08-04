@@ -24,7 +24,7 @@ class Entity
         std::pair{0,1}, //Right
     };
 
-    private:
+    protected:
     using SV = std::string_view;
 
     std::string m_name{};

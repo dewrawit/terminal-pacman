@@ -8,7 +8,8 @@
 int main()
 {
     GameState gameState{ LevelInfo::map };
-    gameState.activateTimerState(Timer::TimerTypes::stalemate);
+    gameState.activateTimerState(Timer::TimerTypes::scatter);
+    gameState.startGhostsWaitTimer();
 
     while(true)
     {
@@ -29,7 +30,7 @@ int main()
             break;
         }
 
-        //TBD gotta update Tile, ghost scared cooldown blah blah blah
+        //TBD gotta update Tile, timer blah blah blah
         gameState.update();
 
         //Ghost AI shit
