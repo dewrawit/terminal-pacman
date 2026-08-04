@@ -8,6 +8,7 @@
 #include "Position.h"
 #include "ColorData.h"
 #include "LevelInfo.h"
+#include "Random.h" //Using learncpp library
 
 class Entity
 {
@@ -51,7 +52,12 @@ class Entity
     void setPosition(const Position& pos) { m_pos = pos; }
     
     Direction getDirection() const { return m_dir; }
-    void setDirection(Direction dir) { m_dir = dir; } 
+    void setDirection(Direction dir) { m_dir = dir; }
+
+    static Direction getRandomDirection()
+    {
+        return static_cast<Direction>(Random::get<int>(0,3));
+    }
 
     //Should be callable even without object
     static std::pair<int,int> getDirectionOffset(Direction dir)
