@@ -15,15 +15,10 @@ int main()
 
     while(true)
     {
-        //also TBD: teleport tile to opposite side
         gameState.renderBoard();
         Entity::Direction directionInput { Game::getDirectionPlayer(gameState) };
 
         gameState.getPacman().move(directionInput);
-        
-        //Check collision (deduct live if collide ghost, also check win, if win, break)
-        //If die, deduct live, teleport pacman and ghost at beginning
-        //If out of live, break
         
         if(Game::handlePacmanCollision(gameState) == contactWithNonScaredGhost)
         {
