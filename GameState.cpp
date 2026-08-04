@@ -421,4 +421,16 @@ void GameState::respawn()
     }
 
     //Gotta restart ghost stalemate timer too TBD
+    for(auto& ghostPtr : m_ghosts)
+    {
+        ghostPtr->setState(Ghost::GhostState::stalemate);
+        ghostPtr->getWaitTimer().activateAndReset();
+    }
+}
+void GameState::retargetGhosts()
+{
+    for(auto& ghostPtr : m_ghosts)
+    {
+        ghostPtr->getTarget();
+    }
 }

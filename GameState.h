@@ -69,4 +69,5 @@ public:
     int getLives() const;
     void loseALife();
     void respawn();
+    void retargetGhosts();
 };

@@ -48,6 +48,7 @@ int main()
         gameState.update();
 
         //Ghost AI shit
+        gameState.retargetGhosts();
 
         //Ghost move
 
