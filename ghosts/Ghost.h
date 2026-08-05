@@ -38,7 +38,7 @@ class Ghost : public Entity
     bool isDead() const { return m_state == GhostState::dead; }
 
     Position getTarget() const { return m_target; }
-    virtual void setTarget(const Position& pos) { m_target = pos; }
+    virtual void setTarget(GameState&) { return; }
     Timer& getWaitTimer() { return m_releaseTimer; }
     void decrementWaitTimer()
     {
