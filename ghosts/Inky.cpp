@@ -9,3 +9,7 @@ Inky::Inky(const Position& pos)
         : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN,
             Timer(20, Timer::TimerTypes::stalemate)}
     { }
+void Inky::setTarget(GameState& gameState)
+{
+
+}

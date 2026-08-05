@@ -11,3 +11,5 @@ class Blinky : public Ghost
     Blinky(const Position& pos);
     void setTarget(GameState& gameState) override;
 };
+
+
