@@ -7,10 +7,12 @@
 #include <ranges>
 #include <print>
 
+#include "ghosts/AllGhosts.h"
 #include "LevelInfo.h"
 #include "Position.h"
 #include "AsciiData.h"
 #include "ColorData.h"
+#include "Pacman.h"
 
 GameState::GameState(const AsciiMap& map) : m_board{ map }
 {

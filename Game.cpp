@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Position.h"
 #include "AsciiData.h"
+#include "ghosts/AllGhosts.h"
 #include "Tile.h"
 #include <iostream>
 #include <string>
