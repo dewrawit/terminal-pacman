@@ -12,5 +12,16 @@ Clyde::Clyde(const Position& pos)
     { }
 void Clyde::setTarget(GameState& gameState)
 {
+    constexpr int chaseDistance { 8 };
 
+    Position pacmanPosition { gameState.getPacman().getPosition() };
+
+    if(m_pos.distance(pacmanPosition) > chaseDistance)
+    {
+        m_target = pacmanPosition;
+    }
+    else
+    {
+        //scatter corner
+    }
 }

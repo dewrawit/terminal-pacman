@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "LevelInfo.h"
+#include <cmath>
 
 struct Position
 {
@@ -38,5 +39,12 @@ struct Position
     bool outOfBounds() const
     {
         return !inBounds();
+    }
+    double distance(const Position& pos)
+    {
+        int dx { row - pos.row };
+        int dy { col - pos.col };
+
+        return std::sqrt ((dx * dx) + (dy * dy));
     }
 };
