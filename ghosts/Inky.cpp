@@ -12,5 +12,23 @@ Inky::Inky(const Position& pos)
     { }
 void Inky::setTarget(GameState& gameState)
 {
+    constexpr int targetAhead { 2 };
 
+    Position pacmanPosition { gameState.getPacman().getPosition() };
+    Direction facingDirection { gameState.getPacman().getDirection() };
+
+    auto [ offsetx, offsety ] { getDirectionOffset(facingDirection) };
+
+    Position pointAhead { 
+        pacmanPosition + std::pair{ offsetx * targetAhead, offsety * targetAhead}
+    };
+    Position blinkyPosition { gameState.getBlinky().getPosition() };
+
+    //Inky target: tip of vector 2 * (blinky -> pointAhead)
+    // = blinky + vector( 2 * blinky -> pointahead)
+    
+    Position doubleVector { (pointAhead - blinkyPosition) + (pointAhead - blinkyPosition) };
+    Position tip { blinkyPosition + doubleVector };
+
+    m_target = tip;
 }

@@ -13,6 +13,14 @@ struct Position
         auto [movRow, movCol] { direction };
         return Position{row + movRow, col + movCol};
     }
+    Position operator+(const Position& pos) const
+    {
+        return Position{row + pos.row, col + pos.col};
+    }
+    Position operator-(const Position& pos) const
+    {
+        return Position{row - pos.row, col - pos.col};
+    }
     friend std::ostream& operator<<(std::ostream& out, const Position& pos)
     {
         out << "(" << pos.row << "," << pos.col << ")";

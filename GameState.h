@@ -70,4 +70,6 @@ public:
     void loseALife();
     void respawn();
     void retargetGhosts();
+
+    const Blinky& getBlinky() const; //for inky's AI
 };

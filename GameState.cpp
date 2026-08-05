@@ -436,3 +436,14 @@ void GameState::retargetGhosts()
         ghostPtr->getTarget();
     }
 }
+const Blinky& GameState::getBlinky() const
+{
+    for(auto& ghostPtr : m_ghosts)
+    {
+        if(ghostPtr->getSymbol() == AsciiData::BlinkySymbol)
+        {
+            return dynamic_cast<Blinky&>(*ghostPtr);
+        }
+    }
+    assert(false && "Blinky not found");
+}

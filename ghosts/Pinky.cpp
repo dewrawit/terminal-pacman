@@ -13,15 +13,12 @@ Pinky::Pinky(const Position& pos)
 void Pinky::setTarget(GameState& gameState)
 {
     //Targets 4 tiles ahead
-    constexpr int pinkyTargetRange { 4 };
+    constexpr int targetRange { 4 };
 
     Position pacmanPosition { gameState.getPacman().getPosition() };
     Direction facingDirection { gameState.getPacman().getDirection() };
 
-    m_target = pacmanPosition;
+    auto [ offsetx, offsety ] { getDirectionOffset(facingDirection) };
 
-    for(int step {0}; step < pinkyTargetRange; ++step)
-    {
-        m_target = m_target + getDirectionOffset(facingDirection);
-    }
+    m_target = pacmanPosition + std::pair{ offsetx * targetRange, offsety * targetRange };
 }
