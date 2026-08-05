@@ -9,6 +9,7 @@
 #include "ColorData.h"
 #include "LevelInfo.h"
 #include "Random.h" //Using learncpp library
+#include <cassert>
 
 class Entity
 {
@@ -56,12 +57,39 @@ class Entity
 
     static Direction getRandomDirection()
     {
-        return static_cast<Direction>(Random::get<int>(0,3));
-    }
+        Direction dir { static_cast<Direction>(Random::get<int>(0,3)) };
 
+        assert(dir != Direction::none && "Random direction shouldn't gave None");
+
+        return dir;
+    }
+    static Direction getNonOppositeRandomDirection(Direction dir)
+    {
+        Direction opposite = getOppositeDirection(dir);
+        while(true)
+        {
+            Direction randomDir { getRandomDirection() };
+            if(randomDir != opposite)
+            {
+                return randomDir;
+            }
+        }
+    }
+    static Direction getOppositeDirection(Direction dir)
+    {
+        switch(dir)
+        {
+            case Direction::up: return Direction::down;
+            case Direction::down: return Direction::up;
+            case Direction::left: return Direction::right;
+            case Direction::right: return Direction::left;
+            default: assert(false && "Cannot get opposite direction of None Direction"); 
+        }
+    }
     //Should be callable even without object
     static std::pair<int,int> getDirectionOffset(Direction dir)
     { 
+        assert(dir != Direction::none && "Cannot get opposite direction of None");
         return directions[static_cast<std::size_t>(dir)];
     } 
 

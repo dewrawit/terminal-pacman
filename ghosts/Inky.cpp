@@ -4,6 +4,7 @@
 #include "../AsciiData.h"
 #include "../Timer.h"
 #include "../Position.h"
+#include "../Board.h"
 
 Inky::Inky(const Position& pos) 
         : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN,

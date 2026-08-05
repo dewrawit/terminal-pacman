@@ -4,6 +4,7 @@
 #include "../AsciiData.h"
 #include "../Timer.h"
 #include "../Position.h"
+#include "../Board.h"
 
 Clyde::Clyde(const Position& pos) 
         : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE,

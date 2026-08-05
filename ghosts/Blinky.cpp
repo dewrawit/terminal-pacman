@@ -4,6 +4,7 @@
 #include "../AsciiData.h"
 #include "../Timer.h"
 #include "../Position.h"
+#include "../Board.h"
 
 Blinky::Blinky(const Position& pos) 
         : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos, Color::RED, 
@@ -12,5 +13,6 @@ Blinky::Blinky(const Position& pos)
 
 void Blinky::setTarget(GameState& gameState)
 {
-
+    //Blinky targets directly at Pacman's position
+    m_target = gameState.getPacman().getPosition();
 }

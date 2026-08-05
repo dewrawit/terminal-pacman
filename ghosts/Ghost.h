@@ -16,7 +16,7 @@ class Ghost : public Entity
     public:
     enum class GhostState { stalemate, chase, scatter, scared, dead };
 
-    private:
+    protected:
     using SV = std::string_view;
 
     GhostState m_state{ GhostState::stalemate };
