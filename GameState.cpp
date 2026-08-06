@@ -439,3 +439,10 @@ const Blinky& GameState::getBlinky() const
     }
     assert(false && "Blinky not found");
 }
+void GameState::moveGhosts()
+{
+    for(auto& ghostPtr : m_ghosts)
+    {
+        ghostPtr->moveTowardTarget();
+    }
+}

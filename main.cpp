@@ -46,6 +46,7 @@ int main()
         gameState.retargetGhosts();
 
         //Ghost move
+        gameState.moveGhosts();
 
         //Check collision (same as pacman check collision)
     }

@@ -36,4 +36,5 @@ class Ghost : public Entity
     virtual void setTarget(GameState&);
     Timer& getWaitTimer();
     void decrementWaitTimer(GameState& gameState);
+    void moveTowardTarget();
 };

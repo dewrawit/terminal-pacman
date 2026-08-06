@@ -18,6 +18,10 @@ void Inky::setTarget(GameState& gameState)
     {
         m_target = LevelInfo::inkyCorner;
     }
+    else if(m_state == GhostState::scared)
+    {
+        m_target = Position::getRandomPosition();
+    }
     else
     {
         constexpr int targetAhead { 2 };

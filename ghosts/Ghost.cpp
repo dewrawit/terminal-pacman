@@ -82,3 +82,7 @@ void Ghost::decrementWaitTimer(GameState& gameState)
         setState(getGhostStateFromTimer(gameState.getActiveTimer()));
     }
 }
+void Ghost::moveTowardTarget()
+{
+    
+}

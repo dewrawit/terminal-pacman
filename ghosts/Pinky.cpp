@@ -18,6 +18,10 @@ void Pinky::setTarget(GameState& gameState)
     {
         m_target = LevelInfo::pinkyCorner;
     }
+    else if(m_state == GhostState::scared)
+    {
+        m_target = Position::getRandomPosition();
+    }
     else
     {
         //Targets 4 tiles ahead

@@ -18,6 +18,10 @@ void Clyde::setTarget(GameState& gameState)
     {
         m_target = LevelInfo::clydeCorner;
     }
+    else if(m_state == GhostState::scared)
+    {
+        m_target = Position::getRandomPosition();
+    }
     else
     {   
         constexpr int chaseDistance { 8 };

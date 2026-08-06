@@ -20,4 +20,6 @@ struct Position
     bool outOfBounds() const;
 
     double distance(const Position& pos) const;
+
+    static Position getRandomPosition(); 
 };

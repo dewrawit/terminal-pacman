@@ -1,5 +1,6 @@
 #include "Position.h"
 #include "LevelInfo.h"
+#include "Random.h"
 #include <cmath>
 #include <utility>
 #include <iostream>
@@ -48,4 +49,10 @@ double Position::distance(const Position& pos) const
     int dy = col - pos.col;
 
     return std::sqrt((dx * dx) + (dy * dy));
+}
+Position Position::getRandomPosition()
+{
+    int randRow { Random::get<int>(0,LevelInfo::mapHeight - 1) };
+    int randCol { Random::get<int>(0,LevelInfo::mapLength - 1) };
+    return Position{ randRow, randCol }; 
 }
