@@ -443,6 +443,6 @@ void GameState::moveGhosts()
 {
     for(auto& ghostPtr : m_ghosts)
     {
-        ghostPtr->moveTowardTarget();
+        ghostPtr->moveTowardTarget(*this);
     }
 }

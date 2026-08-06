@@ -14,13 +14,13 @@ namespace Game
 {
     using uchar = unsigned char;
 
-    bool validDirection( Entity::Direction direction, const GameState& gameState)
+    bool validDirection(const Entity& entity, Entity::Direction direction, const GameState& gameState)
     {
         //If pacman after moving in this direction a tile and hits a wall, it's invalid
         const Board& board { gameState.getBoard() };
-        const Position currentPacmanPosition { gameState.getPacman().getPosition() };
+        const Position currentPosition { entity.getPosition() };
         const Position newPosition { 
-            currentPacmanPosition + Entity::getDirectionOffset(direction) 
+            currentPosition + Entity::getDirectionOffset(direction) 
         };
 
         //Going into Side tunnel (valid) is the only way to make position out of bounds 
@@ -66,7 +66,7 @@ namespace Game
                 default: continue;
             }
 
-            if(validDirection(directionInput, gameState))
+            if(validDirection(gameState.getPacman(), directionInput, gameState))
                 return directionInput;
             else
             {
@@ -88,7 +88,8 @@ namespace Game
         {
             if(ghostPtr->getPosition() == pacmanPosition)
             {
-                if(gameState.ghostAt(pacmanPosition).isScared())
+                if(gameState.ghostAt(pacmanPosition).isScared() || 
+                gameState.ghostAt(pacmanPosition).isDead())
                 {
                     gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
                 }

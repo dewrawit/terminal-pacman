@@ -20,6 +20,10 @@ void Blinky::setTarget(GameState& gameState)
     {
         m_target = LevelInfo::blinkyCorner;
     }
+    else if(m_state == GhostState::scared)
+    {
+        m_target = Position::getRandomPosition();
+    }
     else
     {
         m_target = gameState.getPacman().getPosition();

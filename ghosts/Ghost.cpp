@@ -7,6 +7,7 @@
 #include "../ColorData.h"
 #include "../LevelInfo.h"
 #include "../GameState.h"
+#include "../Game.h"
 
 #include <string_view>
 
@@ -82,7 +83,32 @@ void Ghost::decrementWaitTimer(GameState& gameState)
         setState(getGhostStateFromTimer(gameState.getActiveTimer()));
     }
 }
-void Ghost::moveTowardTarget()
+void Ghost::moveTowardTarget(GameState& gameState)
 {
-    
+    //FIX THIS LATER
+    if(m_state == GhostState::stalemate)
+        return;
+
+    //Check intersection
+
+    //Check if current direction it's facing is legal
+    if(Game::validDirection(*this, m_facingDirection, gameState))
+    {
+        move(m_facingDirection);
+        return;
+    }
+
+    //Get all the valid non-opposite direction
+    for(const auto& direction : directions)
+    {
+        if(direction == m_facingDirection)
+            continue;
+        else if(direction == getOppositeDirection(m_facingDirection))
+            continue;
+        
+        if(Game::validDirection(*this,direction,gameState))
+        {
+
+        }
+    }
 }

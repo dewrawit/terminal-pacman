@@ -20,6 +20,13 @@ class Entity
     protected:
     static constexpr std::array directions
     {
+        Direction::up,
+        Direction::down,
+        Direction::left,
+        Direction::right,
+    };
+    static constexpr std::array directionsOffset
+    {
         std::pair{-1,0}, //Up
         std::pair{1,0}, //Down
         std::pair{0,-1}, //Left
@@ -90,7 +97,7 @@ class Entity
     static std::pair<int,int> getDirectionOffset(Direction dir)
     { 
         assert(dir != Direction::none && "Cannot get opposite direction of None");
-        return directions[static_cast<std::size_t>(dir)];
+        return directionsOffset[static_cast<std::size_t>(dir)];
     } 
 
     void move(Direction dir) 

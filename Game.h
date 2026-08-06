@@ -3,7 +3,7 @@
 
 namespace Game
 {
-    bool validDirection( Entity::Direction direction, const GameState& gameState);
+    bool validDirection(const Entity& entity, Entity::Direction direction, const GameState& gameState);
     Entity::Direction getDirectionPlayer(const GameState& gameState);
     bool handlePacmanCollision(GameState& gameState);
     void printWinMessage();
