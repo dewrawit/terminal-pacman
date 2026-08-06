@@ -33,6 +33,16 @@ class Ghost : public Entity
     { }
 
     GhostState getState() const { return m_state; }
+    static GhostState getGhostStateFromTimer(const Timer& timer)
+    {
+        switch(timer.getType())
+        {
+            case Timer::TimerTypes::chase: return Ghost::GhostState::chase; break;
+            case Timer::TimerTypes::scatter: return Ghost::GhostState::scatter; break;
+            case Timer::TimerTypes::scared: return Ghost::GhostState::scared; break;
+            default: assert(false && "Invalid timer type");
+        }
+    }
     void setState(const GhostState& state) { m_state = state; }
     bool isScared() const { return m_state == GhostState::scared; }
     bool isDead() const { return m_state == GhostState::dead; }

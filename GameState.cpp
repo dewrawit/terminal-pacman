@@ -207,16 +207,7 @@ void GameState::applyGhostCurrentTimerEffect()
 
     const Timer& activeTimer { getActiveTimer() };
 
-    Ghost::GhostState stateToActive{};
-
-    switch(activeTimer.getType())
-    {
-        case Timer::TimerTypes::chase: stateToActive = Ghost::GhostState::chase; break;
-        case Timer::TimerTypes::scatter: stateToActive = Ghost::GhostState::scatter; break;
-        case Timer::TimerTypes::scared: stateToActive = Ghost::GhostState::scared; break;
-        //case Timer::TimerTypes::stalemate: stateToActive = Ghost::GhostState::stalemate; break;
-        default: assert(false && "Invalid timer type in applyGhostTimerEffect()");
-    }
+    Ghost::GhostState stateToActive{ Ghost::getGhostStateFromTimer(activeTimer)};
 
     makeAllGhosts(stateToActive);
 
