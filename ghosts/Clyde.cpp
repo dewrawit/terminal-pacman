@@ -5,6 +5,7 @@
 #include "../Timer.h"
 #include "../Position.h"
 #include "../Board.h"
+#include "../LevelInfo.h"
 
 Clyde::Clyde(const Position& pos) 
         : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE,
@@ -12,16 +13,24 @@ Clyde::Clyde(const Position& pos)
     { }
 void Clyde::setTarget(GameState& gameState)
 {
-    constexpr int chaseDistance { 8 };
-
-    Position pacmanPosition { gameState.getPacman().getPosition() };
-
-    if(m_pos.distance(pacmanPosition) > chaseDistance)
+    if(m_state == GhostState::scatter)
     {
-        m_target = pacmanPosition;
+        m_target = LevelInfo::clydeCorner;
     }
     else
-    {
-        //scatter corner
+    {   
+        constexpr int chaseDistance { 8 };
+
+        Position pacmanPosition { gameState.getPacman().getPosition() };
+
+        if(m_pos.distance(pacmanPosition) > chaseDistance)
+        {
+            m_target = pacmanPosition;
+        }
+        else
+        {
+            m_target = LevelInfo::clydeCorner;
+        }
     }
+    
 }
