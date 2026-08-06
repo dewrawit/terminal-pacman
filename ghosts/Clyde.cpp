@@ -10,7 +10,7 @@
 
 Clyde::Clyde(const Position& pos) 
         : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE,
-            Timer(30, Timer::TimerTypes::stalemate)}
+            Timer("Wait",30, Timer::TimerTypes::stalemate)}
     { }
 void Clyde::setTarget(GameState& gameState)
 {

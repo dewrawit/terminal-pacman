@@ -10,7 +10,7 @@
 
 Pinky::Pinky(const Position& pos) 
         : Ghost{ "Pinky", AsciiData::PinkySymbol, pos, Color::PINK,
-            Timer(10, Timer::TimerTypes::stalemate)} 
+            Timer("Wait",10, Timer::TimerTypes::stalemate)} 
     { }
 void Pinky::setTarget(GameState& gameState)
 {
