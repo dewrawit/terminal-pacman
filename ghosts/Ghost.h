@@ -35,5 +35,5 @@ class Ghost : public Entity
     Position getTarget() const;
     virtual void setTarget(GameState&);
     Timer& getWaitTimer();
-    void decrementWaitTimer();
+    void decrementWaitTimer(GameState& gameState);
 };

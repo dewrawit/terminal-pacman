@@ -61,9 +61,9 @@ GameState::GameState(const AsciiMap& map) : m_board{ map }
     }
 
     //Timers
-    m_globalTimers[Timer::TimerTypes::chase] = Timer(20, Timer::TimerTypes::chase);
-    m_globalTimers[Timer::TimerTypes::scatter] = Timer(10, Timer::TimerTypes::scatter);
-    m_globalTimers[Timer::TimerTypes::scared] = Timer(10, Timer::TimerTypes::scared);
+    m_globalTimers[Timer::TimerTypes::chase] = Timer("Chase", 20, Timer::TimerTypes::chase);
+    m_globalTimers[Timer::TimerTypes::scatter] = Timer("Scatter", 10, Timer::TimerTypes::scatter);
+    m_globalTimers[Timer::TimerTypes::scared] = Timer("Scared", 10, Timer::TimerTypes::scared);
 
     //Each ghost has it's own stalemate timer
     //m_globalTimers[Timer::TimerTypes::stalemate] = Timer(40, Timer::TimerTypes::stalemate);
@@ -254,7 +254,7 @@ void GameState::update()
     applyGhostCurrentTimerEffect();
     for(auto& ghostPtr : m_ghosts)
     {
-        ghostPtr->decrementWaitTimer();
+        ghostPtr->decrementWaitTimer(*this);
     }
 }
 char GameState::getGameObjectSymbolAt(const Position& pos)
@@ -303,6 +303,10 @@ void GameState::renderBoard()
     }
 
     std::println("Lives: {}", getLives());
+
+    //DEBUG
+    std::println("Active: {}", getActiveTimer().getName());
+
     for(int row {0}; row < m_board.getHeight(); ++row)
     {
         for(int col {0}; col < m_board.getLength(); ++col)

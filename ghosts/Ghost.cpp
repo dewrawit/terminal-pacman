@@ -6,6 +6,7 @@
 #include "../Timer.h"
 #include "../ColorData.h"
 #include "../LevelInfo.h"
+#include "../GameState.h"
 
 #include <string_view>
 
@@ -63,7 +64,7 @@ Timer& Ghost::getWaitTimer()
     return m_releaseTimer;
 }
 
-void Ghost::decrementWaitTimer()
+void Ghost::decrementWaitTimer(GameState& gameState)
 {
     if(m_state != GhostState::stalemate)
         return;
@@ -76,8 +77,8 @@ void Ghost::decrementWaitTimer()
     {
         //m_pos = Position{ LevelInfo::ghostSpawnRow, LevelInfo::ghostSpawnCol };
         m_pos = LevelInfo::ghostSpawn;
-        setState(GhostState::scatter);
 
-        //actually the state is whatever global timer is running, TBD
+        //After wait finish ghost state will be whatever global timer active
+        setState(getGhostStateFromTimer(gameState.getActiveTimer()));
     }
 }
