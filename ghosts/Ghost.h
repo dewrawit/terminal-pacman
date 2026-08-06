@@ -2,14 +2,12 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "../Entity.h"
 #include "../Position.h"
-#include "../AsciiData.h"
 #include "../Timer.h"
-#include "../ColorData.h"
-#include "../LevelInfo.h"
+
+class GameState;
 
 class Ghost : public Entity
 {
@@ -26,46 +24,16 @@ class Ghost : public Entity
     public:
     virtual ~Ghost() = default; //Plan to make gamestate store unique_ptr to Ghost
     Ghost() = default;
-    Ghost(SV name, char symbol, const Position& pos, SV color, const Timer& releaseTimer)
-        : Entity{ name, symbol, pos, color }
-        , m_state{ GhostState::stalemate }
-        , m_releaseTimer{ releaseTimer }
-    { }
+    Ghost(SV name, char symbol, const Position& pos, SV color, const Timer& releaseTimer);
 
-    GhostState getState() const { return m_state; }
-    static GhostState getGhostStateFromTimer(const Timer& timer)
-    {
-        switch(timer.getType())
-        {
-            case Timer::TimerTypes::chase: return Ghost::GhostState::chase; break;
-            case Timer::TimerTypes::scatter: return Ghost::GhostState::scatter; break;
-            case Timer::TimerTypes::scared: return Ghost::GhostState::scared; break;
-            default: assert(false && "Invalid timer type");
-        }
-    }
-    void setState(const GhostState& state) { m_state = state; }
-    bool isScared() const { return m_state == GhostState::scared; }
-    bool isDead() const { return m_state == GhostState::dead; }
+    GhostState getState() const;
+    static GhostState getGhostStateFromTimer(const Timer& timer);
+    void setState(const GhostState& state);
+    bool isScared() const;
+    bool isDead() const;
 
-    Position getTarget() const { return m_target; }
-    virtual void setTarget(GameState&) { return; }
-    Timer& getWaitTimer() { return m_releaseTimer; }
-    void decrementWaitTimer()
-    {
-        if(m_state != GhostState::stalemate)
-            return;
-
-        assert(m_releaseTimer.isRunning() && "Ghost wait timer is not running");
-
-        m_releaseTimer.decrement();
-
-        if(m_releaseTimer.timeout())
-        {
-            //m_pos = Position{ LevelInfo::ghostSpawnRow, LevelInfo::ghostSpawnCol };
-            m_pos = LevelInfo::ghostSpawn;
-            setState(GhostState::scatter);
-
-            //actually the state is whatever global timer is running, TBD
-        }
-    }   
+    Position getTarget() const;
+    virtual void setTarget(GameState&);
+    Timer& getWaitTimer();
+    void decrementWaitTimer();
 };

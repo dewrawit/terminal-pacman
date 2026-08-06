@@ -6,6 +6,7 @@
 #include "../Position.h"
 #include "../Board.h"
 #include "../LevelInfo.h"
+#include "../ColorData.h"
 
 Blinky::Blinky(const Position& pos) 
         : Ghost{ "Blinky", AsciiData::BlinkySymbol, pos, Color::RED, 

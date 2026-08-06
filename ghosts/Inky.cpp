@@ -6,6 +6,7 @@
 #include "../Position.h"
 #include "../Board.h"
 #include "../LevelInfo.h"
+#include "../ColorData.h"
 
 Inky::Inky(const Position& pos) 
         : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN,

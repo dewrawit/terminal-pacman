@@ -6,6 +6,7 @@
 #include "../Position.h"
 #include "../Board.h"
 #include "../LevelInfo.h"
+#include "../ColorData.h"
 
 Clyde::Clyde(const Position& pos) 
         : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE,

@@ -6,6 +6,7 @@
 #include "../Position.h"
 #include "../Board.h"
 #include "../LevelInfo.h"
+#include "../ColorData.h"
 
 Pinky::Pinky(const Position& pos) 
         : Ghost{ "Pinky", AsciiData::PinkySymbol, pos, Color::PINK,
