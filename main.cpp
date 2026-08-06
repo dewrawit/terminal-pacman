@@ -39,7 +39,7 @@ int main()
             break;
         }
 
-        //TBD gotta update Tile, timer blah blah blah
+        //update global timer, ghost wait timer (teleport out of house if timeout)
         gameState.update();
 
         //Ghost AI shit

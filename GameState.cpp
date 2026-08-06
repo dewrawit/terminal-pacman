@@ -214,7 +214,7 @@ void GameState::applyGhostCurrentTimerEffect()
     //Some ghost might still have thier waiting timer active
     for(auto& ghostPtr : m_ghosts)
     {
-        if(!(ghostPtr->getWaitTimer().timeout()))
+        if(!ghostPtr->getWaitTimer().timeout() && ghostPtr->getWaitTimer().isRunning())
         {
             ghostPtr->setState(Ghost::GhostState::stalemate);
         }

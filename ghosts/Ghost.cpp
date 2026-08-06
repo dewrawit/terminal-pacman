@@ -10,6 +10,12 @@
 #include "../Game.h"
 
 #include <string_view>
+#include <vector>
+#include <cassert>
+#include <ranges>
+#include <algorithm>
+#include <unordered_map>
+#include <iostream>
 
 using SV = std::string_view;
 
@@ -82,33 +88,49 @@ void Ghost::decrementWaitTimer(GameState& gameState)
         //After wait finish ghost state will be whatever global timer active
         setState(getGhostStateFromTimer(gameState.getActiveTimer()));
     }
+
+    std::cout << m_name << " has state " << static_cast<int>(m_state) << std::endl;
+
 }
 void Ghost::moveTowardTarget(GameState& gameState)
 {
-    //FIX THIS LATER
     if(m_state == GhostState::stalemate)
         return;
 
-    //Check intersection
-
-    //Check if current direction it's facing is legal
-    if(Game::validDirection(*this, m_facingDirection, gameState))
+    //Just finished waiting
+    if(getWaitTimer().timeout())
     {
-        move(m_facingDirection);
+        m_pos = LevelInfo::ghostSpawn; //get out of the house
+        getWaitTimer().deactivateAndReset();
         return;
     }
+    std::vector<Direction> validDirections{ getValidDirections(gameState) };
 
-    //Get all the valid non-opposite direction
-    for(const auto& direction : directions)
+    //Can go many ways, pick the best one.
+    std::unordered_map<Direction,double> directionDistance {};
+
+    for(const auto& direction : validDirections)
     {
-        if(direction == m_facingDirection)
-            continue;
-        else if(direction == getOppositeDirection(m_facingDirection))
-            continue;
-        
-        if(Game::validDirection(*this,direction,gameState))
-        {
+        Position newPosition { m_pos + getDirectionOffset(direction) };
+        directionDistance[direction] = m_target.distance(newPosition);
+    }
 
-        }
+    Direction bestDirection { getBestDirection(directionDistance) };
+
+    if(m_facingDirection == Direction::none)
+    {
+        m_facingDirection = bestDirection;
+        move(bestDirection);
+    }
+    else
+    {
+        //ignore opposite direction
+        directionDistance.erase(getOppositeDirection(m_facingDirection));
+
+        //This should also handle one way path case
+        //(since thats the only path it can go so it has the best distance in valid directions)
+        bestDirection = getBestDirection(directionDistance);
+        
+        move(bestDirection);
     }
 }

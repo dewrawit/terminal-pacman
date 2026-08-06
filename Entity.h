@@ -5,19 +5,25 @@
 #include <utility>
 #include <array>
 #include <cmath>
+#include <vector>
+
 #include "Position.h"
 #include "ColorData.h"
-#include "LevelInfo.h"
-#include "Random.h" //Using learncpp library
+
 #include <cassert>
+#include <algorithm>
+#include <ranges>
+#include <unordered_map>
+
+class GameState;
 
 class Entity
 {
     //Direction enum must pair with directions pair array
-    public:
+public:
     enum class Direction { up, down, left, right, none };
 
-    protected:
+protected:
     static constexpr std::array directions
     {
         Direction::up,
@@ -25,6 +31,7 @@ class Entity
         Direction::left,
         Direction::right,
     };
+
     static constexpr std::array directionsOffset
     {
         std::pair{-1,0}, //Up
@@ -33,113 +40,42 @@ class Entity
         std::pair{0,1}, //Right
     };
 
-    protected:
+protected:
     using SV = std::string_view;
 
     std::string m_name{};
     char m_symbol{};
     Position m_pos{};
-    Direction m_facingDirection{Direction::none};
-    std::string m_color {Color::RESET};
+    Direction m_facingDirection{ Direction::none };
+    std::string m_color{ Color::RESET };
 
-    public:
+public:
     virtual ~Entity() = default;
     Entity() = default;
-    Entity(SV name, char symbol, const Position& pos, SV color)
-        : m_name{ name }
-        , m_symbol{ symbol }
-        , m_pos{ pos }
-        , m_color{ color }
-    { }
+    Entity(SV name, char symbol, const Position& pos, SV color);
 
-    const std::string& getName() const { return m_name; }
-    char getSymbol() const { return m_symbol; }
-    const std::string& getColor() const { return m_color; }
+    const std::string& getName() const;
+    char getSymbol() const;
+    const std::string& getColor() const;
 
-    Position getPosition() const { return m_pos; }
-    void setPosition(const Position& pos) { m_pos = pos; }
-    
-    Direction getDirection() const { return m_facingDirection; }
-    void setDirection(Direction dir) { m_facingDirection = dir; }
+    Position getPosition() const;
+    void setPosition(const Position& pos);
 
-    static Direction getRandomDirection()
-    {
-        Direction dir { static_cast<Direction>(Random::get<int>(0,3)) };
+    Direction getDirection() const;
+    void setDirection(Direction dir);
 
-        assert(dir != Direction::none && "Random direction shouldn't gave None");
+    static Direction getRandomDirection();
+    static Direction getNonOppositeRandomDirection(Direction dir);
+    static Direction getOppositeDirection(Direction dir);
 
-        return dir;
-    }
-    static Direction getNonOppositeRandomDirection(Direction dir)
-    {
-        Direction opposite = getOppositeDirection(dir);
-        while(true)
-        {
-            Direction randomDir { getRandomDirection() };
-            if(randomDir != opposite)
-            {
-                return randomDir;
-            }
-        }
-    }
-    static Direction getOppositeDirection(Direction dir)
-    {
-        switch(dir)
-        {
-            case Direction::up: return Direction::down;
-            case Direction::down: return Direction::up;
-            case Direction::left: return Direction::right;
-            case Direction::right: return Direction::left;
-            default: assert(false && "Cannot get opposite direction of None Direction"); 
-        }
-    }
     //Should be callable even without object
-    static std::pair<int,int> getDirectionOffset(Direction dir)
-    { 
-        assert(dir != Direction::none && "Cannot get opposite direction of None");
-        return directionsOffset[static_cast<std::size_t>(dir)];
-    } 
+    static std::pair<int, int> getDirectionOffset(Direction dir);
 
-    void move(Direction dir) 
-    {
-        //DEBUG
-        //std::cout << m_pos << std::endl;
+    std::vector<Direction> getValidDirections(const GameState& gameState);
+    Direction getBestDirection(const std::unordered_map<Direction, double>& directionDistance);
 
-        m_pos = m_pos + getDirectionOffset(dir);
+    void move(Direction dir);
 
-        //(column in bound is 0-27), length = 28
-        //so out of bound column is -1 or 28
-
-        //Side Tunnel check
-        if(m_pos.outOfBounds())
-        {
-            //Teleport to other side (same row, opposite column)
-            int newColumn {};
-
-            if(m_pos.col < LevelInfo::mapLength)
-            {
-                newColumn = LevelInfo::mapLength + m_pos.col;
-            }
-            else if(m_pos.col >= LevelInfo::mapLength)
-            {
-                newColumn = m_pos.col - LevelInfo::mapLength;
-            }
-
-            m_pos = Position{ m_pos.row, newColumn };
-
-            //DEBUG
-            //std::cout << m_pos << std::endl;
-        }
-
-        m_facingDirection = dir;
-    }
-
-    bool isAt(const Position& pos)
-    {
-        return m_pos == pos;
-    }
-    bool isAt(int row, int col)
-    {
-        return m_pos == Position{ row, col };
-    }
+    bool isAt(const Position& pos) const;
+    bool isAt(int row, int col) const;
 };
