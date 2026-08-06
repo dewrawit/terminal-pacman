@@ -51,8 +51,11 @@ class Ghost : public Entity
 
         if(m_releaseTimer.timeout())
         {
-            m_pos = Position{ LevelInfo::ghostSpawnRow, LevelInfo::ghostSpawnCol };
+            //m_pos = Position{ LevelInfo::ghostSpawnRow, LevelInfo::ghostSpawnCol };
+            m_pos = LevelInfo::ghostSpawn;
             setState(GhostState::scatter);
+
+            //actually the state is whatever global timer is running, TBD
         }
     }   
 };

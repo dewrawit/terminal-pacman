@@ -2,6 +2,7 @@
 
 #include <array>
 #include <string_view>
+#include "Position.h"
 
 namespace LevelInfo
 {
@@ -36,4 +37,10 @@ namespace LevelInfo
 
     constexpr int ghostSpawnRow = 8;
     constexpr int ghostSpawnCol = 14;
+
+    const Position ghostSpawn { ghostSpawnRow, ghostSpawnCol };
+    const Position blinkyCorner { 0, mapLength - 1 }; //Top right
+    const Position pinkyCorner { 0, 0 }; //Top left
+    const Position clydeCorner { mapHeight - 1, 0 }; //Bottom left
+    const Position inkyCorner { mapHeight - 1, mapLength - 1 }; //Bottom right
 }

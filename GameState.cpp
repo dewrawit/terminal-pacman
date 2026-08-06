@@ -420,11 +420,8 @@ void GameState::respawn()
                 ghostPtr->setPosition(m_spawnPoints[Character::clyde]);
                 break;
         }
-    }
 
-    //Gotta restart ghost stalemate timer too TBD
-    for(auto& ghostPtr : m_ghosts)
-    {
+        //Gotta restart ghost stalemate timer too
         ghostPtr->setState(Ghost::GhostState::stalemate);
         ghostPtr->getWaitTimer().activateAndReset();
     }
