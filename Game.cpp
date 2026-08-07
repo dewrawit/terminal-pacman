@@ -105,6 +105,12 @@ namespace Game
             if(gameState.pelletAt(pacmanPosition).isSuperPellet())
             {
                 gameState.activateTimerState(Timer::TimerTypes::scared);
+                for(auto& ghostPtr : gameState.getGhosts())
+                {
+                    if(!ghostPtr->isScared() && !ghostPtr->isDead())
+                        ghostPtr->flipDirection();
+                }
+                
             }
             gameState.removePelletAt(pacmanPosition);
         }

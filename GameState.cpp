@@ -61,9 +61,9 @@ GameState::GameState(const AsciiMap& map) : m_board{ map }
     }
 
     //Timers
-    m_globalTimers[Timer::TimerTypes::chase] = Timer("Chase", 20, Timer::TimerTypes::chase);
-    m_globalTimers[Timer::TimerTypes::scatter] = Timer("Scatter", 10, Timer::TimerTypes::scatter);
-    m_globalTimers[Timer::TimerTypes::scared] = Timer("Scared", 10, Timer::TimerTypes::scared);
+    m_globalTimers[Timer::TimerTypes::chase] = Timer("Chase", 50, Timer::TimerTypes::chase);
+    m_globalTimers[Timer::TimerTypes::scatter] = Timer("Scatter", 20, Timer::TimerTypes::scatter);
+    m_globalTimers[Timer::TimerTypes::scared] = Timer("Scared", 20, Timer::TimerTypes::scared);
 
     //Each ghost has it's own stalemate timer
     //m_globalTimers[Timer::TimerTypes::stalemate] = Timer(40, Timer::TimerTypes::stalemate);
@@ -237,6 +237,7 @@ void GameState::updateTimer()
                 break;
             case Timer::TimerTypes::scatter: 
                 activateTimerState(Timer::TimerTypes::chase);
+                flipGhostsDirection();
                 break;
             case Timer::TimerTypes::scared: 
                 activateTimerState(Timer::TimerTypes::chase);
@@ -255,6 +256,7 @@ void GameState::update()
     for(auto& ghostPtr : m_ghosts)
     {
         ghostPtr->decrementWaitTimer(*this);
+        ghostPtr->setSpeed();
     }
 }
 char GameState::getGameObjectSymbolAt(const Position& pos)
@@ -346,6 +348,10 @@ void GameState::renderBoard()
                         {
                             color = Color::SCAREDBLUE;
                         }
+                        else if(ghostAt(Position{row, col}).isDead())
+                        {
+                            color = Color::RESET;
+                        }
                         else
                         {
                             color = ghostAt(Position{row, col}).getColor();
@@ -419,6 +425,7 @@ void GameState::respawn()
 
         //Gotta restart ghost stalemate timer too
         ghostPtr->setState(Ghost::GhostState::stalemate);
+        ghostPtr->resetSpeed();
         ghostPtr->getWaitTimer().activateAndReset();
     }
 }
@@ -445,5 +452,12 @@ void GameState::moveGhosts()
     for(auto& ghostPtr : m_ghosts)
     {
         ghostPtr->moveTowardTarget(*this);
+    }
+}
+void GameState::flipGhostsDirection()
+{
+    for(auto& ghostPtr : m_ghosts)
+    {
+        ghostPtr->flipDirection();
     }
 }

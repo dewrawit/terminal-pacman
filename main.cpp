@@ -39,7 +39,7 @@ int main()
             break;
         }
 
-        //update global timer, ghost wait timer (teleport out of house if timeout)
+        //update global timer, ghost wait timer (teleport out of house if timeout), ghost speed
         gameState.update();
 
         //Ghost AI shit

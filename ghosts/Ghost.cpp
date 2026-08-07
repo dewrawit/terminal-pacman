@@ -104,33 +104,61 @@ void Ghost::moveTowardTarget(GameState& gameState)
         getWaitTimer().deactivateAndReset();
         return;
     }
-    std::vector<Direction> validDirections{ getValidDirections(gameState) };
 
-    //Can go many ways, pick the best one.
-    std::unordered_map<Direction,double> directionDistance {};
-
-    for(const auto& direction : validDirections)
+    while(m_speedCredits >= m_speedToMove)
     {
-        Position newPosition { m_pos + getDirectionOffset(direction) };
-        directionDistance[direction] = m_target.distance(newPosition);
+        m_speedCredits -= m_speedToMove;
+        std::vector<Direction> validDirections{ getValidDirections(gameState) };
+
+        //Can go many ways, pick the best one.
+        std::unordered_map<Direction,double> directionDistance {};
+
+        for(const auto& direction : validDirections)
+        {
+            Position newPosition { m_pos + getDirectionOffset(direction) };
+            directionDistance[direction] = m_target.distance(newPosition);
+        }
+
+        Direction bestDirection { getBestDirection(directionDistance) };
+
+        if(m_facingDirection == Direction::none)
+        {
+            m_facingDirection = bestDirection;
+            move(bestDirection);
+        }
+        else
+        {
+            //ignore opposite direction
+            directionDistance.erase(getOppositeDirection(m_facingDirection));
+
+            //This should also handle one way path case
+            //(since thats the only path it can go so it has the best distance in valid directions)
+            bestDirection = getBestDirection(directionDistance);
+            m_facingDirection = bestDirection;
+            move(bestDirection);
+        }
+
+        if(isDead() && m_pos == LevelInfo::ghostSpawn) //back home
+        {
+            m_state = GhostState::chase;
+        }
     }
-
-    Direction bestDirection { getBestDirection(directionDistance) };
-
-    if(m_facingDirection == Direction::none)
+}
+void Ghost::setSpeed()
+{
+    switch(m_state)
     {
-        m_facingDirection = bestDirection;
-        move(bestDirection);
+        case GhostState::stalemate: m_speedCredits = 0; break;
+        case GhostState::scared: m_speedCredits += m_speedToMove / 2; break;
+        case GhostState::dead: m_speedCredits += m_speedToMove * 3; break;
+        default: m_speedCredits += m_speedToMove; break;
     }
-    else
-    {
-        //ignore opposite direction
-        directionDistance.erase(getOppositeDirection(m_facingDirection));
-
-        //This should also handle one way path case
-        //(since thats the only path it can go so it has the best distance in valid directions)
-        bestDirection = getBestDirection(directionDistance);
-        m_facingDirection = bestDirection;
-        move(bestDirection);
-    }
+}
+void Ghost::resetSpeed()
+{
+    m_speedCredits = 0;
+}
+void Ghost::flipDirection()
+{
+    m_facingDirection = getOppositeDirection(m_facingDirection);
 }

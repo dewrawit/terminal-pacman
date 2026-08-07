@@ -17,6 +17,8 @@ class Ghost : public Entity
     protected:
     using SV = std::string_view;
 
+    const int m_speedToMove{ 100 };
+    int m_speedCredits{ 0 };
     GhostState m_state{ GhostState::stalemate };
     Position m_target{};
     Timer m_releaseTimer{};
@@ -37,4 +39,7 @@ class Ghost : public Entity
     Timer& getWaitTimer();
     void decrementWaitTimer(GameState& gameState);
     void moveTowardTarget(GameState& gameState);
+    void setSpeed();
+    void resetSpeed();
+    void flipDirection();
 };

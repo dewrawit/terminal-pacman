@@ -73,4 +73,5 @@ public:
     void moveGhosts();
 
     const Blinky& getBlinky() const; //for inky's AI
+    void flipGhostsDirection();
 };
