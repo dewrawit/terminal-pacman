@@ -22,6 +22,10 @@ void Pinky::setTarget(GameState& gameState)
     {
         m_target = Position::getRandomPosition();
     }
+    else if(m_state == GhostState::dead)
+    {
+        m_target = LevelInfo::ghostSpawn;
+    }
     else
     {
         //Targets 4 tiles ahead

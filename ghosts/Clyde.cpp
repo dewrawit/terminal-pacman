@@ -22,6 +22,10 @@ void Clyde::setTarget(GameState& gameState)
     {
         m_target = Position::getRandomPosition();
     }
+    else if(m_state == GhostState::dead)
+    {
+        m_target = LevelInfo::ghostSpawn;
+    }
     else
     {   
         constexpr int chaseDistance { 8 };

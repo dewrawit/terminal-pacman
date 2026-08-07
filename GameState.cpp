@@ -209,7 +209,7 @@ void GameState::applyGhostCurrentTimerEffect()
 
     Ghost::GhostState stateToActive{ Ghost::getGhostStateFromTimer(activeTimer)};
 
-    makeAllGhosts(stateToActive);
+    //makeAllGhosts(stateToActive);
 
     //Some ghost might still have thier waiting timer active
     for(auto& ghostPtr : m_ghosts)
@@ -221,6 +221,10 @@ void GameState::applyGhostCurrentTimerEffect()
         else if(ghostPtr->isDead()) //dead state cannot be overwritten until reach home
         {
             ghostPtr->setState(Ghost::GhostState::dead);
+        }
+        else
+        {
+            ghostPtr->setState(stateToActive);
         }
     }
 }
@@ -319,6 +323,7 @@ void GameState::renderBoard()
         std::cout << ghostPtr->getName()
         << "'s state: " 
         << Ghost::ghostStateToStr(ghostPtr->getState())
+        << ", targets: " << ghostPtr->getTarget()
         << std::endl;
     }
                         
