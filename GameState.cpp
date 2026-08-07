@@ -218,6 +218,10 @@ void GameState::applyGhostCurrentTimerEffect()
         {
             ghostPtr->setState(Ghost::GhostState::stalemate);
         }
+        else if(ghostPtr->isDead()) //dead state cannot be overwritten until reach home
+        {
+            ghostPtr->setState(Ghost::GhostState::dead);
+        }
     }
 }
 void GameState::updateTimer()
@@ -309,7 +313,15 @@ void GameState::renderBoard()
 
     //DEBUG
     std::println("Active: {}", getActiveTimer().getName());
-
+    //DEBUG
+    for(const auto& ghostPtr : m_ghosts)
+    {
+        std::cout << ghostPtr->getName()
+        << "'s state: " 
+        << Ghost::ghostStateToStr(ghostPtr->getState())
+        << std::endl;
+    }
+                        
     for(int row {0}; row < m_board.getHeight(); ++row)
     {
         for(int col {0}; col < m_board.getLength(); ++col)
@@ -344,6 +356,7 @@ void GameState::renderBoard()
                         break;
 
                     default: //Ghost
+
                         if(ghostAt(Position{row, col}).isScared())
                         {
                             color = Color::SCAREDBLUE;

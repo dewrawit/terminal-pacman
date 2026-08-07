@@ -166,3 +166,15 @@ void Ghost::flipDirection()
     }
     m_facingDirection = getOppositeDirection(m_facingDirection);
 }
+SV Ghost::ghostStateToStr(GhostState ghostState)
+{
+    switch(ghostState)
+    {
+        case GhostState::chase: return "Chase";
+        case GhostState::dead: return "Dead";
+        case GhostState::scared: return "Scared";
+        case GhostState::scatter: return "Scatter";
+        case GhostState::stalemate: return "Stalemate";
+        default: assert(false && "Detect invalid state in ghostStateToStr");
+    }
+}

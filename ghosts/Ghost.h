@@ -42,4 +42,5 @@ class Ghost : public Entity
     void setSpeed();
     void resetSpeed();
     void flipDirection();
+    static SV ghostStateToStr(GhostState ghostState);
 };
