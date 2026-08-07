@@ -140,7 +140,7 @@ void Ghost::moveTowardTarget(GameState& gameState)
 
         if(isDead() && m_pos == LevelInfo::ghostSpawn) //back home
         {
-            m_state = GhostState::chase;
+            m_state = getGhostStateFromTimer(gameState.getActiveTimer());
         }
     }
 }
@@ -160,5 +160,9 @@ void Ghost::resetSpeed()
 }
 void Ghost::flipDirection()
 {
+    if(m_facingDirection == Direction::none)
+    {
+        return;
+    }
     m_facingDirection = getOppositeDirection(m_facingDirection);
 }
