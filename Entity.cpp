@@ -96,13 +96,13 @@ std::vector<Entity::Direction> Entity::getValidDirections(const GameState& gameS
 
     for (const auto& direction : directions)
     {
-        if (Game::validDirection(*this, direction, gameState))
+        if(Game::validDirection(*this, direction, gameState))
         {
             validDirections.push_back(direction);
         }
     }
 
-    assert(validDirections.size() < 2 && "Map should'nt have dead ends");
+    assert(validDirections.size() >= 2 && "Expect >= 2 direction (Map shouldn't have dead ends)");
 
     return validDirections;
 }

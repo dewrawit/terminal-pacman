@@ -259,18 +259,8 @@ void GameState::update()
 }
 char GameState::getGameObjectSymbolAt(const Position& pos)
 {
-    //Check Pellet
-    auto pelletIt { std::ranges::find_if(m_pellets, [pos](const Pellet& pellet) -> bool
-        {
-            return pellet.getPosition() == pos;
-        })};
+    //Priority: should check for ghost first (if ghost overlap with pellet it should print ghost)
 
-    if( pelletIt != m_pellets.end() )
-    {
-        return pelletIt->isSuperPellet() ? 
-        AsciiData::SuperPelletSymbol : AsciiData::NormalPelletSymbol;
-    }
-        
     //Check Ghost
     auto ghostIt { std::ranges::find_if(m_ghosts, [pos](const auto& ghostPtr) -> bool
         {
@@ -288,6 +278,17 @@ char GameState::getGameObjectSymbolAt(const Position& pos)
         return m_pacman.getSymbol();
     }
 
+    //Check Pellet
+    auto pelletIt { std::ranges::find_if(m_pellets, [pos](const Pellet& pellet) -> bool
+        {
+            return pellet.getPosition() == pos;
+        })};
+
+    if( pelletIt != m_pellets.end() )
+    {
+        return pelletIt->isSuperPellet() ? 
+        AsciiData::SuperPelletSymbol : AsciiData::NormalPelletSymbol;
+    }
     return ' ';
 }
 char GameState::getGameObjectSymbolAt(int row, int col)
@@ -425,7 +426,7 @@ void GameState::retargetGhosts()
 {
     for(auto& ghostPtr : m_ghosts)
     {
-        ghostPtr->getTarget();
+        ghostPtr->setTarget(*this);
     }
 }
 const Blinky& GameState::getBlinky() const

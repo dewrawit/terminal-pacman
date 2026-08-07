@@ -82,14 +82,14 @@ void Ghost::decrementWaitTimer(GameState& gameState)
 
     if(m_releaseTimer.timeout())
     {
-        //m_pos = Position{ LevelInfo::ghostSpawnRow, LevelInfo::ghostSpawnCol };
         m_pos = LevelInfo::ghostSpawn;
 
         //After wait finish ghost state will be whatever global timer active
         setState(getGhostStateFromTimer(gameState.getActiveTimer()));
     }
 
-    std::cout << m_name << " has state " << static_cast<int>(m_state) << std::endl;
+    //debug
+    //std::cout << m_name << " has state " << static_cast<int>(m_state) << std::endl;
 
 }
 void Ghost::moveTowardTarget(GameState& gameState)
@@ -98,7 +98,7 @@ void Ghost::moveTowardTarget(GameState& gameState)
         return;
 
     //Just finished waiting
-    if(getWaitTimer().timeout())
+    if(getWaitTimer().timeout() && getWaitTimer().isRunning())
     {
         m_pos = LevelInfo::ghostSpawn; //get out of the house
         getWaitTimer().deactivateAndReset();
@@ -130,7 +130,7 @@ void Ghost::moveTowardTarget(GameState& gameState)
         //This should also handle one way path case
         //(since thats the only path it can go so it has the best distance in valid directions)
         bestDirection = getBestDirection(directionDistance);
-        
+        m_facingDirection = bestDirection;
         move(bestDirection);
     }
 }

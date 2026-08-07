@@ -49,6 +49,18 @@ int main()
         gameState.moveGhosts();
 
         //Check collision (same as pacman check collision)
+        if(Game::handlePacmanCollision(gameState) == contactWithNonScaredGhost)
+        {
+            //reset level, lose a life, check loss
+            gameState.loseALife();
+            if(gameState.lose())
+            {
+                Game::printLoseMessage();
+                break;
+            }
+            gameState.respawn();
+            continue;
+        }
     }
     
     return 0;
