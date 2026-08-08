@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Entity.h"
 #include "Timer.h"
+#include "SaveSystem.h"
 
 
 int main()
@@ -40,6 +41,11 @@ int main()
             break;
         }
     }
-    
+
+    SaveSystem saveSystem{};
+    if(Game::chooseSaveGame())
+    {
+        Game::saveGame(saveSystem);
+    }
     return 0;
 }

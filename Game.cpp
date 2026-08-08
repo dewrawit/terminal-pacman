@@ -5,10 +5,12 @@
 #include "AsciiData.h"
 #include "ghosts/AllGhosts.h"
 #include "Tile.h"
+#include "SaveSystem.h"
 #include <iostream>
 #include <string>
 #include <cctype>
 #include <print>
+#include <thread>
 
 namespace Game
 {
@@ -76,6 +78,8 @@ namespace Game
     }
     bool handlePacmanCollision(GameState& gameState)
     {
+        using namespace std::chrono_literals;
+
         Pacman& pacman { gameState.getPacman() };
         const Position pacmanPosition { pacman.getPosition() };
         
@@ -97,11 +101,20 @@ namespace Game
                 {
                     //reset level, lose a life, check loss
                     gameState.loseALife();
+
+                    gameState.renderBoard();
+
                     if(gameState.lose())
                     {
                         Game::printLoseMessage();
                         return true;
                     }
+
+                    std::println("\nYou collided with {}! Respawning shortly...", 
+                        ghostPtr->getName());
+
+                    std::this_thread::sleep_for(2s);
+
                     gameState.respawn();
                     return false;
                 }
@@ -135,6 +148,18 @@ namespace Game
     }
     void printLoseMessage()
     {
-        std::println("Out of lives, you lose!\n");
+        std::println("Out of lives, GAME OVER!\n");
+    }
+    bool chooseSaveGame()
+    {
+
+    }
+    void saveGame(const SaveSystem& saveSystem)
+    {
+
+    }
+    void loadLeaderBoard(const SaveSystem& saveSystem)
+    {
+
     }
 }
