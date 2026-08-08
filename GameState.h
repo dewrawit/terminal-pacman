@@ -25,6 +25,7 @@ private:
     TimerArray m_globalTimers{};
     int m_lives { 3 };
     using AsciiMap = std::array<std::string_view,LevelInfo::mapHeight>;
+    int m_score { 0 };
 
     std::array<Position, Character::maxCharacter> m_spawnPoints{};
     
@@ -74,4 +75,7 @@ public:
 
     const Blinky& getBlinky() const; //for inky's AI
     void flipGhostsDirection();
+
+    int getScore() const;
+    void increaseScore(int amount);
 };

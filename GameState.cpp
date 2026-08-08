@@ -313,10 +313,10 @@ void GameState::renderBoard()
         std::println();
     }
 
-    std::println("Lives: {}", getLives());
+    std::println("Lives: {}        Score: {}", getLives(), getScore());
 
     //DEBUG
-     std::println("Active: {}", getActiveTimer().getName());
+    //  std::println("Active: {}", getActiveTimer().getName());
     // for(const auto& ghostPtr : m_ghosts)
     // {
     //     std::cout << ghostPtr->getName()
@@ -480,4 +480,12 @@ void GameState::flipGhostsDirection()
     {
         ghostPtr->flipDirection();
     }
+}
+int GameState::getScore() const
+{
+    return m_score;
+}
+void GameState::increaseScore(int amount)
+{
+    m_score += amount;
 }

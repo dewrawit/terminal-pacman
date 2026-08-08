@@ -45,8 +45,8 @@ bool Position::outOfBounds() const
 
 double Position::distance(const Position& pos) const
 {
-    int dx = row - pos.row;
-    int dy = col - pos.col;
+    int dx = std::abs(row - pos.row);
+    int dy = std::abs(col - pos.col);
 
     return std::sqrt((dx * dx) + (dy * dy));
 }

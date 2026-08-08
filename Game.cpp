@@ -120,6 +120,7 @@ namespace Game
                 }
             }
             gameState.removePelletAt(pacmanPosition);
+            gameState.increaseScore(100);
             if(gameState.win())
             {
                 Game::printWinMessage();
