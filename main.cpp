@@ -7,7 +7,7 @@
 
 int main()
 {
-    constexpr bool contactWithNonScaredGhost { true };
+    constexpr bool shouldEndGame { true };
     
     GameState gameState{ LevelInfo::map };
     gameState.activateTimerState(Timer::TimerTypes::scatter);
@@ -20,22 +20,9 @@ int main()
 
         gameState.getPacman().move(directionInput);
         
-        if(Game::handlePacmanCollision(gameState) == contactWithNonScaredGhost)
+        //Check collision, win, lose, respawn
+        if(Game::handlePacmanCollision(gameState) == shouldEndGame)
         {
-            //reset level, lose a life, check loss
-            gameState.loseALife();
-            if(gameState.lose())
-            {
-                Game::printLoseMessage();
-                break;
-            }
-            gameState.respawn();
-            continue;
-        }
-
-        if(gameState.win())
-        {
-            Game::printWinMessage();
             break;
         }
 
@@ -48,18 +35,9 @@ int main()
         //Ghost move
         gameState.moveGhosts();
 
-        //Check collision (same as pacman check collision)
-        if(Game::handlePacmanCollision(gameState) == contactWithNonScaredGhost)
+        if(Game::handlePacmanCollision(gameState) == shouldEndGame)
         {
-            //reset level, lose a life, check loss
-            gameState.loseALife();
-            if(gameState.lose())
-            {
-                Game::printLoseMessage();
-                break;
-            }
-            gameState.respawn();
-            continue;
+            break;
         }
     }
     

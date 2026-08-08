@@ -61,7 +61,7 @@ GameState::GameState(const AsciiMap& map) : m_board{ map }
     }
 
     //Timers
-    m_globalTimers[Timer::TimerTypes::chase] = Timer("Chase", 50, Timer::TimerTypes::chase);
+    m_globalTimers[Timer::TimerTypes::chase] = Timer("Chase", 60, Timer::TimerTypes::chase);
     m_globalTimers[Timer::TimerTypes::scatter] = Timer("Scatter", 20, Timer::TimerTypes::scatter);
     m_globalTimers[Timer::TimerTypes::scared] = Timer("Scared", 20, Timer::TimerTypes::scared);
 
@@ -316,16 +316,15 @@ void GameState::renderBoard()
     std::println("Lives: {}", getLives());
 
     //DEBUG
-    std::println("Active: {}", getActiveTimer().getName());
-    //DEBUG
-    for(const auto& ghostPtr : m_ghosts)
-    {
-        std::cout << ghostPtr->getName()
-        << "'s state: " 
-        << Ghost::ghostStateToStr(ghostPtr->getState())
-        << ", targets: " << ghostPtr->getTarget()
-        << std::endl;
-    }
+     std::println("Active: {}", getActiveTimer().getName());
+    // for(const auto& ghostPtr : m_ghosts)
+    // {
+    //     std::cout << ghostPtr->getName()
+    //     << "'s state: " 
+    //     << Ghost::ghostStateToStr(ghostPtr->getState())
+    //     << ", targets: " << ghostPtr->getTarget()
+    //     << std::endl;
+    // }
                         
     for(int row {0}; row < m_board.getHeight(); ++row)
     {
@@ -445,6 +444,9 @@ void GameState::respawn()
         ghostPtr->setState(Ghost::GhostState::stalemate);
         ghostPtr->resetSpeed();
         ghostPtr->getWaitTimer().activateAndReset();
+        activateTimerState(Timer::TimerTypes::scatter);
+        
+        assert(oneTimerActive() && "None or more than 1 global timer active after respawn");
     }
 }
 void GameState::retargetGhosts()

@@ -93,9 +93,17 @@ namespace Game
                 {
                     gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
                 }
-                else
+                else //Collide with healthy ghost 
                 {
-                    return true;
+                    //reset level, lose a life, check loss
+                    gameState.loseALife();
+                    if(gameState.lose())
+                    {
+                        Game::printLoseMessage();
+                        return true;
+                    }
+                    gameState.respawn();
+                    return false;
                 }
             }
         }
@@ -110,11 +118,14 @@ namespace Game
                     if(!ghostPtr->isScared() && !ghostPtr->isDead())
                         ghostPtr->flipDirection();
                 }
-                
             }
             gameState.removePelletAt(pacmanPosition);
+            if(gameState.win())
+            {
+                Game::printWinMessage();
+                return true;
+            }
         }
-
         return false;
     }
     void printWinMessage()
