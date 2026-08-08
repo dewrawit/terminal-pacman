@@ -156,14 +156,16 @@ namespace Game
     }
     bool chooseSaveGame()
     {
-
+        
     }
     void saveGame(SaveSystem& saveSystem, const GameState& gameState)
     {
-        //Get name TBD
-        std::string userName {};
+        std::string userName { inputUserName() };
+
+        std::println("Adding your score to leaderboard...");
 
         saveSystem.save(userName, gameState.getScore());
+        std::println("Score saved.");
     }
     void loadLeaderBoard(const SaveSystem& saveSystem)
     {
@@ -179,6 +181,36 @@ namespace Game
         catch(const std::exception& e)
         {
             std::cerr << e.what() << '\n';
+        }
+    }
+    std::string inputUserName()
+    {
+        std::print("Enter your name (No spaces): ");
+
+        while(true)
+        {
+            bool valid { true };
+            std::string input{};
+            std::getline(std::cin >> std::ws, input);
+
+            //Remove trailing whitespace
+            while(!input.empty() && std::isspace(static_cast<uchar>(input.back())))
+            {
+                input.pop_back();
+            }
+
+            for(auto c : input)
+            {
+                if(std::isspace(static_cast<uchar>(c)))
+                {
+                    valid = false;
+                    std::print("Name must not contain spaces: ");
+                    break;
+                }
+            }
+
+            if(valid)
+                return input;
         }
     }
 }

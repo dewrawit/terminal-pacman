@@ -19,7 +19,7 @@ class SaveSystem
 
     public:
     SaveSystem() = default;
-    void save(SV newName, int newScore)
+    void save(SV newName, int newScore) 
     {
         std::ifstream inSaveFile { saveFileName };
 
