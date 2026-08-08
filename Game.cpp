@@ -150,16 +150,35 @@ namespace Game
     {
         std::println("Out of lives, GAME OVER!\n");
     }
+    void printThankMessage()
+    {
+        std::println("Thank you for playing!\n");
+    }
     bool chooseSaveGame()
     {
 
     }
-    void saveGame(const SaveSystem& saveSystem)
+    void saveGame(SaveSystem& saveSystem, const GameState& gameState)
     {
+        //Get name TBD
+        std::string userName {};
 
+        saveSystem.save(userName, gameState.getScore());
     }
     void loadLeaderBoard(const SaveSystem& saveSystem)
     {
-
+        saveSystem.loadLeaderboard();
+    }
+    void saveScoreAndShowLeaderBoard(SaveSystem& saveSystem, const GameState& gameState)
+    {
+        try
+        {
+            saveGame(saveSystem, gameState);
+            loadLeaderBoard(saveSystem);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
 }

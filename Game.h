@@ -11,7 +11,9 @@ namespace Game
     void printWinMessage();
     void printLoseMessage();
     bool chooseSaveGame();
-    void saveGame(const SaveSystem& saveSystem);
+    void saveGame(SaveSystem& saveSystem, const GameState& gameState);
     void loadLeaderBoard(const SaveSystem& saveSystem);
+    void saveScoreAndShowLeaderBoard(SaveSystem& saveSystem, const GameState& gameState);
+    void printThankMessage();
 
 }

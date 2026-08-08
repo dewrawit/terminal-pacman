@@ -5,7 +5,6 @@
 #include "Timer.h"
 #include "SaveSystem.h"
 
-
 int main()
 {
     constexpr bool shouldEndGame { true };
@@ -42,10 +41,13 @@ int main()
         }
     }
 
-    SaveSystem saveSystem{};
     if(Game::chooseSaveGame())
     {
-        Game::saveGame(saveSystem);
+        SaveSystem saveSystem{};
+        Game::saveGame(saveSystem, gameState);
+        Game::loadLeaderBoard(saveSystem);
     }
+    Game::printThankMessage();
+
     return 0;
 }

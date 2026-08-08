@@ -8,29 +8,31 @@
 #include <ranges>
 #include <vector>
 #include <utility>
+#include <format>
 
 class SaveSystem
 {
     using SV = std::string_view;
     using PlayerAndScores = std::pair<std::string, int>;
 
+    const std::string saveFileName {"Leaderboard.txt"};
+
     public:
     SaveSystem() = default;
     void save(SV newName, int newScore)
     {
-        std::ifstream inSaveFile ("Leaderboard.txt");
+        std::ifstream inSaveFile { saveFileName };
 
         if(!inSaveFile)
         {
-            throw std::runtime_error("Unable to open Leaderboard.txt file");
+            throw std::runtime_error(std::format("Unable to open {} file", saveFileName));
         }
-
-        std::string name{};
-        int score{};
 
         std::vector<PlayerAndScores> playerScores{};
 
         //Read file data
+        std::string name{};
+        int score{};
         while(inSaveFile >> name >> score)
         {
             playerScores.emplace_back(std::pair{name, score});
@@ -49,11 +51,11 @@ class SaveSystem
         );
 
         //Load back into file (clear old content first)
-        std::ofstream outSaveFile("Leaderboard.txt", std::ios::out | std::ios::trunc);
+        std::ofstream outSaveFile { saveFileName, std::ios::out | std::ios::trunc };
 
         if(!inSaveFile)
         {
-            throw std::runtime_error("Unable to open Leaderboard.txt file");
+            throw std::runtime_error(std::format("Unable to open {} file", saveFileName));
         }
 
         for(const auto& [name, score] : playerScores)
@@ -62,9 +64,15 @@ class SaveSystem
         }
         outSaveFile.close();
     }   
-    void loadLeaderboard()
+    void loadLeaderboard() const
     {
-        std::fstream saveFile ("Leaderboard.txt");
+        std::ifstream saveFile { saveFileName };
+
+        if(!saveFile)
+        {
+            throw std::runtime_error(std::format("Unable to open {} file", saveFileName));
+        }
+
         std::string name{};
         int score{};
 
