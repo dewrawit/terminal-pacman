@@ -44,8 +44,7 @@ int main()
     if(Game::chooseSaveGame())
     {
         SaveSystem saveSystem{};
-        Game::saveGame(saveSystem, gameState);
-        Game::loadLeaderBoard(saveSystem);
+        Game::saveScoreAndShowLeaderBoard(saveSystem, gameState);
     }
     Game::printThankMessage();
 

@@ -15,7 +15,7 @@ class SaveSystem
     using SV = std::string_view;
     using PlayerAndScores = std::pair<std::string, int>;
 
-    const std::string saveFileName {"Leaderboard.txt"};
+    const std::string saveFileName {"saveSystem/Leaderboard.txt"};
 
     public:
     SaveSystem() = default;
@@ -23,23 +23,23 @@ class SaveSystem
     {
         std::ifstream inSaveFile { saveFileName };
 
-        if(!inSaveFile)
-        {
-            throw std::runtime_error(std::format("Unable to open {} file", saveFileName));
-        }
-
         std::vector<PlayerAndScores> playerScores{};
 
-        //Read file data
-        std::string name{};
-        int score{};
-        while(inSaveFile >> name >> score)
+        //If file doesn't open then it's the first play so leaderboard is not created yet
+        if(inSaveFile)
         {
-            playerScores.emplace_back(std::pair{name, score});
+            //Read file data
+            std::string name{};
+            int score{};
+            while(inSaveFile >> name >> score)
+            {
+                playerScores.emplace_back(std::pair{name, score});
+            }
+            inSaveFile.close();
         }
-        playerScores.emplace_back(std::pair{newName, newScore});
-        inSaveFile.close();
 
+        playerScores.emplace_back(std::pair{newName, newScore});
+        
         std::ranges::sort(playerScores, 
             [](const PlayerAndScores& ps1, const PlayerAndScores& ps2) -> bool
             {
