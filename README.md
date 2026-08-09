@@ -96,4 +96,5 @@ The project also served as practical experience with:
 ## Status
 
 **Complete — v1.0**
+
 **v1.1 - Give points accurate to original version when consumed frightened ghosts, Ghost will enter permanent chase mode after repeating the Scatter-Chase cycle enough times.**
