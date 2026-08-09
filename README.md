@@ -2,7 +2,7 @@
 
 A terminal-based Pac-Man game written in **C++23**.
 
-This project is a recreation of the classic Pac-Man gameplay, implemented from scratch as a way to practice object-oriented programming, polymorphism, game-state management, AI, and C++ software design.
+This project is a recreation of the classic Pac-Man gameplay, implemented from scratch as a way to practice object-oriented programming, polymorphism, game-state management, AI, and C++ software design. I tried to make the game mechanics as similar to the original game as possible.
 
 The game runs entirely in the terminal using ASCII characters and ANSI escape codes for color.
 
@@ -25,6 +25,7 @@ The game runs entirely in the terminal using ASCII characters and ANSI escape co
 
 * The game is **turn-based** rather than real-time.
 * Ghost movement and Pac-Man movement occur one turn at a time.
+* For simplification, the frightened period does not pause the global Scatter/Chase timer. It automatically set the timer to Chase once it ends.
 
 ## Requirements
 
@@ -95,3 +96,4 @@ The project also served as practical experience with:
 ## Status
 
 **Complete — v1.0**
+**v1.1 - Give points accurate to original version when consumed frightened ghosts, Ghost will enter permanent chase mode after repeating the Scatter-Chase cycle enough times.**
