@@ -16,4 +16,5 @@ namespace Game
     void saveScoreAndShowLeaderBoard(SaveSystem& saveSystem, const GameState& gameState);
     void printThankMessage();
     std::string inputUserName();
+    std::string getStripString();
 }

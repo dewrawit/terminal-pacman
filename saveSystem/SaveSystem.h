@@ -53,7 +53,7 @@ class SaveSystem
         //Load back into file (clear old content first)
         std::ofstream outSaveFile { saveFileName, std::ios::out | std::ios::trunc };
 
-        if(!inSaveFile)
+        if(!outSaveFile)
         {
             throw std::runtime_error(std::format("Unable to open {} file", saveFileName));
         }
@@ -81,8 +81,9 @@ class SaveSystem
         int rank { 1 };
         while(saveFile  >> name >> score)
         {
-            println("{}.    {}      {}",rank,name,score);
+            std::println("{}.    {}      {}",rank,name,score);
+            ++rank;
         }
-        ++rank;
+        
     }
 };

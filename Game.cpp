@@ -43,14 +43,7 @@ namespace Game
         while(true)
         {
             std::cout << "Enter (W,A,S,D): ";
-            std::string input{};
-            std::getline(std::cin >> std::ws, input);
-
-            //Remove trailing whitespace
-            while(!input.empty() && std::isspace(static_cast<uchar>(input.back())))
-            {
-                input.pop_back();
-            }
+            std::string input{ getStripString() };
 
             if(input.length() != 1)
             {
@@ -156,7 +149,27 @@ namespace Game
     }
     bool chooseSaveGame()
     {
-        
+        while(true)
+        {
+            std::print("Would you like to add your score to the leaderboard? [y/n]:  ");
+            std::string input{ getStripString() };
+
+            if(input.length() != 1)
+            {
+                continue;
+            }
+
+            switch(input[0])
+            {
+                case 'y':
+                case 'Y':
+                    return true;
+                case 'n':
+                case 'N':
+                    return false;
+                default: continue;
+            }
+        }
     }
     void saveGame(SaveSystem& saveSystem, const GameState& gameState)
     {
@@ -185,26 +198,19 @@ namespace Game
     }
     std::string inputUserName()
     {
-        std::print("Enter your name (No spaces): ");
+        std::print("Enter your name (No spaces or special symbols): ");
 
         while(true)
         {
             bool valid { true };
-            std::string input{};
-            std::getline(std::cin >> std::ws, input);
-
-            //Remove trailing whitespace
-            while(!input.empty() && std::isspace(static_cast<uchar>(input.back())))
-            {
-                input.pop_back();
-            }
-
+            std::string input{ getStripString() };
+            
             for(auto c : input)
             {
-                if(std::isspace(static_cast<uchar>(c)))
+                if(!std::isalpha(static_cast<uchar>(c)))
                 {
                     valid = false;
-                    std::print("Name must not contain spaces: ");
+                    std::print("Name must not contain spaces or special symbols: ");
                     break;
                 }
             }
@@ -213,4 +219,17 @@ namespace Game
                 return input;
         }
     }
+    std::string getStripString()
+    {
+        std::string input{};
+        std::getline(std::cin >> std::ws, input);
+
+        //Remove trailing whitespace
+        while(!input.empty() && std::isspace(static_cast<uchar>(input.back())))
+        {
+            input.pop_back();
+        }
+
+        return input;
+    }   
 }
