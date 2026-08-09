@@ -24,7 +24,8 @@ Board:
 -2d array of tiles
 
 Tile:
--raw pointer to Entity that's on this tile (print it's symbol)
+-raw pointer to Entity that's on this tile (print it's symbol) -> (BAD IDEA)
+-should only contain info whether it's walkable or not
 -Position
 -Occupied bool state
 
