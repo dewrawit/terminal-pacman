@@ -26,6 +26,7 @@ The game runs entirely in the terminal using ASCII characters and ANSI escape co
 * The game is **turn-based** rather than real-time.
 * Ghost movement and Pac-Man movement occur one turn at a time.
 * For simplification, the frightened period does not pause the global Scatter/Chase timer. It automatically set the timer to Chase once it ends.
+* Some features might not be perfectly accurate to the original game.
 
 ## Requirements
 
