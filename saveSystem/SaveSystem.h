@@ -96,7 +96,7 @@ class SaveSystem
         std::string name{};
         int score{};
 
-        std::println("==========Leaderboard==========");
+        std::println("==========Leaderboard==========\n");
 
         int rank { 1 };
         while(saveFile  >> name >> score)
@@ -105,6 +105,6 @@ class SaveSystem
             ++rank;
         }     
 
-        std::println("===============================");
+        std::println("\n===============================");
     }
 };
