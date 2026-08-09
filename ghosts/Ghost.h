@@ -3,9 +3,9 @@
 #include <string>
 #include <string_view>
 
-#include "../Entity.h"
-#include "../Position.h"
-#include "../Timer.h"
+#include "../core/Entity.h"
+#include "../core/Position.h"
+#include "../core/Timer.h"
 
 class GameState;
 

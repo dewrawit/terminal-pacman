@@ -3,9 +3,9 @@
 #include "Game.h"
 #include "Position.h"
 #include "AsciiData.h"
-#include "ghosts/AllGhosts.h"
+#include "../ghosts/AllGhosts.h"
 #include "Tile.h"
-#include "saveSystem/SaveSystem.h"
+#include "../saveSystem/SaveSystem.h"
 #include <iostream>
 #include <string>
 #include <cctype>

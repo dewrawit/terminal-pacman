@@ -1,13 +1,13 @@
 #include "Ghost.h"
 
-#include "../Entity.h"
-#include "../Position.h"
-#include "../AsciiData.h"
-#include "../Timer.h"
-#include "../ColorData.h"
-#include "../LevelInfo.h"
-#include "../GameState.h"
-#include "../Game.h"
+#include "../core/Entity.h"
+#include "../core/Position.h"
+#include "../core/AsciiData.h"
+#include "../core/Timer.h"
+#include "../core/ColorData.h"
+#include "../core/LevelInfo.h"
+#include "../core/GameState.h"
+#include "../core/Game.h"
 
 #include <string_view>
 #include <vector>

@@ -1,12 +1,12 @@
 #include "Ghost.h"
 #include "Inky.h"
-#include "../GameState.h"
-#include "../AsciiData.h"
-#include "../Timer.h"
-#include "../Position.h"
-#include "../Board.h"
-#include "../LevelInfo.h"
-#include "../ColorData.h"
+#include "../core/GameState.h"
+#include "../core/AsciiData.h"
+#include "../core/Timer.h"
+#include "../core/Position.h"
+#include "../core/Board.h"
+#include "../core/LevelInfo.h"
+#include "../core/ColorData.h"
 
 Inky::Inky(const Position& pos) 
         : Ghost{ "Inky", AsciiData::InkySymbol, pos, Color::CYAN,

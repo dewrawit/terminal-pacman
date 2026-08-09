@@ -7,7 +7,7 @@
 #include <ranges>
 #include <print>
 
-#include "ghosts/AllGhosts.h"
+#include "../ghosts/AllGhosts.h"
 #include "LevelInfo.h"
 #include "Position.h"
 #include "AsciiData.h"

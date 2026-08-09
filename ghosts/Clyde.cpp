@@ -1,12 +1,12 @@
 #include "Ghost.h"
 #include "Clyde.h"
-#include "../GameState.h"
-#include "../AsciiData.h"
-#include "../Timer.h"
-#include "../Position.h"
-#include "../Board.h"
-#include "../LevelInfo.h"
-#include "../ColorData.h"
+#include "../core/GameState.h"
+#include "../core/AsciiData.h"
+#include "../core/Timer.h"
+#include "../core/Position.h"
+#include "../core/Board.h"
+#include "../core/LevelInfo.h"
+#include "../core/ColorData.h"
 
 Clyde::Clyde(const Position& pos) 
         : Ghost{ "Clyde", AsciiData::ClydeSymbol, pos, Color::ORANGE,
