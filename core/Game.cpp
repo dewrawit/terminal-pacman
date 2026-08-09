@@ -11,6 +11,7 @@
 #include <cctype>
 #include <print>
 #include <thread>
+#include <cmath>
 
 namespace Game
 {
@@ -88,7 +89,13 @@ namespace Game
                 gameState.ghostAt(pacmanPosition).isDead())
                 {
                     gameState.ghostAt(pacmanPosition).setState(Ghost::GhostState::dead);
-                }
+                    gameState.incrementGhostConsumedStacks();
+
+                    //Points for each stacks 200 -> 400 -> 800 -> 1600
+                    gameState.increaseScore(
+                        100 * static_cast<int>(std::pow(2, gameState.getGhostConsumedStacks()))
+                    );
+                } 
                 else //Collide with healthy ghost 
                 {
                     //reset level, lose a life, check loss

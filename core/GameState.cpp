@@ -233,8 +233,18 @@ void GameState::updateTimer()
     assert(oneTimerActive() && "Detect multiple active timers in updateTimer()");
 
     Timer& activeTimer { getActiveTimer() };
-    activeTimer.decrement();
 
+    if(!inPermaChase())
+    {
+        activeTimer.decrement();
+    }
+    else
+    {
+        assert((activeTimer.getType() == Timer::TimerTypes::chase || 
+        activeTimer.getType() == Timer::TimerTypes::scared)
+        && "In Perma chase mode but active timer is not chase");
+    }
+        
     //Change active timer if the last one timeout
     if(activeTimer.timeout())
     {
@@ -245,10 +255,12 @@ void GameState::updateTimer()
                 break;
             case Timer::TimerTypes::scatter: 
                 activateTimerState(Timer::TimerTypes::chase);
+                ++m_modeRepeat; //the 4th time it enter chase will be permanent
                 flipGhostsDirection();
                 break;
             case Timer::TimerTypes::scared: 
                 activateTimerState(Timer::TimerTypes::chase);
+                resetGhostConsumedStacks();
                 break;
             // case Timer::TimerTypes::stalemate: 
             //     activateTimerState(Timer::TimerTypes::scatter);
@@ -316,7 +328,7 @@ void GameState::renderBoard()
     std::println("Lives: {}        Score: {}", getLives(), getScore());
 
     //DEBUG
-    //  std::println("Active: {}", getActiveTimer().getName());
+    std::println("Active: {}", getActiveTimer().getName());
     // for(const auto& ghostPtr : m_ghosts)
     // {
     //     std::cout << ghostPtr->getName()
@@ -444,10 +456,13 @@ void GameState::respawn()
         ghostPtr->setState(Ghost::GhostState::stalemate);
         ghostPtr->resetSpeed();
         ghostPtr->getWaitTimer().activateAndReset();
-        activateTimerState(Timer::TimerTypes::scatter);
-        
-        assert(oneTimerActive() && "None or more than 1 global timer active after respawn");
     }
+
+    resetGhostConsumedStacks();
+    resetModeRepeat();
+
+    activateTimerState(Timer::TimerTypes::scatter);      
+    assert(oneTimerActive() && "None or more than 1 global timer active after respawn");
 }
 void GameState::retargetGhosts()
 {
@@ -488,4 +503,24 @@ int GameState::getScore() const
 void GameState::increaseScore(int amount)
 {
     m_score += amount;
+}
+void GameState::resetModeRepeat()
+{
+    m_modeRepeat = 1;
+}
+void GameState::resetGhostConsumedStacks()
+{
+    m_ghostConsumedPerPower = 0;
+}
+bool GameState::inPermaChase() const
+{
+    return m_modeRepeat >= m_modeRepeatPermanentChase;
+}
+int GameState::getGhostConsumedStacks() const
+{
+    return m_ghostConsumedPerPower;
+}
+void GameState::incrementGhostConsumedStacks()
+{
+    ++m_ghostConsumedPerPower;
 }

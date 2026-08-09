@@ -26,6 +26,9 @@ private:
     int m_lives { 3 };
     using AsciiMap = std::array<std::string_view,LevelInfo::mapHeight>;
     int m_score { 0 };
+    int m_modeRepeat { 1 };
+    int m_ghostConsumedPerPower { 0 };
+    const int m_modeRepeatPermanentChase { 4 };
 
     std::array<Position, Character::maxCharacter> m_spawnPoints{};
     
@@ -78,4 +81,12 @@ public:
 
     int getScore() const;
     void increaseScore(int amount);
+
+    void resetModeRepeat();
+    void resetGhostConsumedStacks();
+    int getGhostConsumedStacks() const;
+    void incrementGhostConsumedStacks();
+
+    bool inPermaChase() const;
+    void setPausedTimer(const Timer& timer);
 };
