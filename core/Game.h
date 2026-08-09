@@ -11,10 +11,11 @@ namespace Game
     void printWinMessage();
     void printLoseMessage();
     bool chooseSaveGame();
-    void saveGame(SaveSystem& saveSystem, const GameState& gameState);
+    void saveGame(const SaveSystem& saveSystem, const GameState& gameState);
     void loadLeaderBoard(const SaveSystem& saveSystem);
-    void saveScoreAndShowLeaderBoard(SaveSystem& saveSystem, const GameState& gameState);
+    void saveScoreAndShowLeaderBoard(const SaveSystem& saveSystem, const GameState& gameState);
     void printThankMessage();
+    void checkHighScore(const SaveSystem& saveSystem, const GameState& gameState);
     std::string inputUserName();
     std::string getStripString();
 }

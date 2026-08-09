@@ -19,7 +19,27 @@ class SaveSystem
 
     public:
     SaveSystem() = default;
-    void save(SV newName, int newScore) 
+    int getHighScore() const 
+    {
+        //First row is the highest score
+        std::ifstream inSaveFile { saveFileName };
+
+        if(inSaveFile)
+        {
+            [[maybe_unused]] std::string name{};
+            int score{};
+
+            inSaveFile >> name >> score;
+
+            inSaveFile.close();
+            return score;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    void save(SV newName, int newScore) const
     {
         std::ifstream inSaveFile { saveFileName };
 
@@ -81,9 +101,10 @@ class SaveSystem
         int rank { 1 };
         while(saveFile  >> name >> score)
         {
-            std::println("{}.    {}      {}",rank,name,score);
+            std::println("{}.    {}         {}",rank,name,score);
             ++rank;
-        }
-        
+        }     
+
+        std::println("===============================");
     }
 };

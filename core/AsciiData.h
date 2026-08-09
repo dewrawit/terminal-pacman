@@ -4,7 +4,10 @@ namespace AsciiData
 {
     constexpr char PacmanSymbol {'P'};
     constexpr char BlinkySymbol {'B'};
-    constexpr char PinkySymbol {'N'}; //'P' collides with pacman
+
+    //'P' collides with pacman, cause problem when reading board from levelInfo
+    constexpr char PinkySymbol {'N'}; 
+    
     constexpr char InkySymbol {'I'};
     constexpr char ClydeSymbol {'C'};
     constexpr char NormalPelletSymbol {'.'};

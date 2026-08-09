@@ -15,6 +15,7 @@
 namespace Game
 {
     using uchar = unsigned char;
+    using namespace std::chrono_literals;
 
     bool validDirection(const Entity& entity, Entity::Direction direction, const GameState& gameState)
     {
@@ -71,8 +72,6 @@ namespace Game
     }
     bool handlePacmanCollision(GameState& gameState)
     {
-        using namespace std::chrono_literals;
-
         Pacman& pacman { gameState.getPacman() };
         const Position pacmanPosition { pacman.getPosition() };
         
@@ -137,15 +136,15 @@ namespace Game
     }
     void printWinMessage()
     {
-        std::println("All pellets captured, you win!\n");
+        std::println("\nAll pellets captured, you win!\n");
     }
     void printLoseMessage()
     {
-        std::println("Out of lives, GAME OVER!\n");
+        std::println("\nOut of lives, GAME OVER!\n");
     }
     void printThankMessage()
     {
-        std::println("Thank you for playing!\n");
+        std::println("\nThank you for playing!\n");
     }
     bool chooseSaveGame()
     {
@@ -171,20 +170,21 @@ namespace Game
             }
         }
     }
-    void saveGame(SaveSystem& saveSystem, const GameState& gameState)
+    void saveGame(const SaveSystem& saveSystem, const GameState& gameState)
     {
         std::string userName { inputUserName() };
 
-        std::println("Adding your score to leaderboard...");
+        std::println("Adding your score to leaderboard...\n");
+
+        std::this_thread::sleep_for(2s);
 
         saveSystem.save(userName, gameState.getScore());
-        std::println("Score saved.");
     }
     void loadLeaderBoard(const SaveSystem& saveSystem)
     {
         saveSystem.loadLeaderboard();
     }
-    void saveScoreAndShowLeaderBoard(SaveSystem& saveSystem, const GameState& gameState)
+    void saveScoreAndShowLeaderBoard(const SaveSystem& saveSystem, const GameState& gameState)
     {
         try
         {
@@ -198,13 +198,21 @@ namespace Game
     }
     std::string inputUserName()
     {
-        std::print("Enter your name (No spaces or special symbols): ");
+        std::println("\n===============================\n");
+
+        std::print("Enter your name (3 alphabets): ");
 
         while(true)
         {
             bool valid { true };
             std::string input{ getStripString() };
             
+            if(input.length() != 3)
+            {
+                std::print("Invalid name length, try again: ");
+                valid = false;
+            }
+
             for(auto c : input)
             {
                 if(!std::isalpha(static_cast<uchar>(c)))
@@ -216,7 +224,14 @@ namespace Game
             }
 
             if(valid)
+            {
+                std::println("\n===============================\n");
+                for(auto& letter : input)
+                {
+                    letter = static_cast<char>(std::toupper(static_cast<uchar>(letter)));
+                }
                 return input;
+            }
         }
     }
     std::string getStripString()
@@ -232,4 +247,17 @@ namespace Game
 
         return input;
     }   
+    void checkHighScore(const SaveSystem& saveSystem, const GameState& gameState)
+    {
+        std::println("===============================\n");
+        if(gameState.getScore() >= saveSystem.getHighScore())
+        {
+            std::println("      NEW RECORD! {}\n", gameState.getScore());
+        }
+        else
+        {
+            std::println("      Your score: {}\n", gameState.getScore());
+        }
+        std::println("===============================\n");
+    }
 }

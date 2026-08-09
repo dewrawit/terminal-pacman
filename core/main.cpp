@@ -41,9 +41,11 @@ int main()
         }
     }
 
+    SaveSystem saveSystem{};
+
+    Game::checkHighScore(saveSystem, gameState);
     if(Game::chooseSaveGame())
-    {
-        SaveSystem saveSystem{};
+    {  
         Game::saveScoreAndShowLeaderBoard(saveSystem, gameState);
     }
     Game::printThankMessage();
