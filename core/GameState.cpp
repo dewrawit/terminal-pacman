@@ -328,7 +328,7 @@ void GameState::renderBoard()
     std::println("Lives: {}        Score: {}", getLives(), getScore());
 
     //DEBUG
-    std::println("Active: {}", getActiveTimer().getName());
+    //std::println("Active: {}", getActiveTimer().getName());
     // for(const auto& ghostPtr : m_ghosts)
     // {
     //     std::cout << ghostPtr->getName()

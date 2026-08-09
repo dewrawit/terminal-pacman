@@ -88,5 +88,4 @@ public:
     void incrementGhostConsumedStacks();
 
     bool inPermaChase() const;
-    void setPausedTimer(const Timer& timer);
 };
